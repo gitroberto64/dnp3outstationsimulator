@@ -1,0 +1,12 @@
+Debug/
+Release/
+build/
+_CPack_Packages/
+dnp3slavesymu.vcxproj.filters
+.vs
+*~
+*.db
+*.opendb
+*.xrc
+*.pyc
+*.swp

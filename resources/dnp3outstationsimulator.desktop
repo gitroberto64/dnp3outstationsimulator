@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=DNP3OutstationSimulator
+Exec='DNP3OutstationSimulator'
+Icon=/usr/share/icons/dnp3outstationsimulator.png
+Terminal=false
+StartupNotify=false
