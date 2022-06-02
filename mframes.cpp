@@ -1903,7 +1903,7 @@ MDBinaryDialog::MDBinaryDialog(wxWindow *parent, const wxString &old_val, const 
     as.Add(opendnp3::DoubleBitSpec::to_string(opendnp3::DoubleBit::DETERMINED_OFF));
     as.Add(opendnp3::DoubleBitSpec::to_string(opendnp3::DoubleBit::DETERMINED_ON));
     as.Add(opendnp3::DoubleBitSpec::to_string(opendnp3::DoubleBit::INDETERMINATE));
-    combo = new wxComboBox(this, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize, as);
+    combo = new wxComboBox(m_panelStateDialog, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize, as);
     bSizerStateDialog->Insert(0, combo, 0, wxALL, 5);
     Fit();
     read(old_val, old_qual);
@@ -1944,7 +1944,7 @@ void MDBinaryDialog::write(wxString &val, wxString &qual)
 
 MAnalogDialog::MAnalogDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, std::function<void (const wxString& val, const wxString& qual)> fun) : MStateDialog(parent, fun)
 {
-    text = new wxTextCtrl(this, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize);
+    text = new wxTextCtrl(m_panelStateDialog, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize);
     bSizerStateDialog->Insert(0, text, 0, wxALL, 5);
     Fit();
     read(old_val, old_qual);
@@ -1987,7 +1987,7 @@ void MAnalogDialog::write(wxString &val, wxString &qual)
 
 MCounterDialog::MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, std::function<void (const wxString& val, const wxString& qual)> fun) : MStateDialog(parent, fun)
 {
-    text = new wxTextCtrl(this, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize);
+    text = new wxTextCtrl(m_panelStateDialog, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize);
     bSizerStateDialog->Insert(0, text, 0, wxALL, 5);
     Fit();
     read(old_val, old_qual);
