@@ -6,7 +6,8 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 * wxwidgets 3.0.5: https://wxwidgets.org
 * cmake: https://cmake.org/
 ##### For Windows:
-* Visual Studio 2019
+* Visual Studio Code
+* MSBuild https://visualstudio.microsoft.com/pl/downloads/
 * NSIS:  https://nsis.sourceforge.io/Main_Page
 ##### For Linux:
 * g++-10 or newer
@@ -17,8 +18,8 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 * cd dnp3outstationsimulator
 
 #### wxWidgets
+* https://github.com/wxWidgets/wxWidgets/releases/tag/v3.0.5
 * unpack to ../wx
-* Compile by Visual Studio 2019 (build/msw)
 
 #### opendnp3
 * git clone https://github.com/dnp3/opendnp3 ../opendnp3
