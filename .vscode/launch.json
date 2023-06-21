@@ -33,7 +33,7 @@
                     "ignoreFailures": false
                 }
             ],
-            "preLaunchTask": "make"
+            "preLaunchTask": "cmake-build"
         }
 
     ]
