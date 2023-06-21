@@ -14,7 +14,7 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "console": "integratedTerminal",
-            "preLaunchTask": "make"
+            "preLaunchTask": "cmake-build"
         },
         {
             "name": "(gdb) Launch",

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.20.0)
 
 project(DNP3OutstationSimulator VERSION 1.1.1)
 
@@ -29,7 +29,7 @@ target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} opendnp3)
 string(TOLOWER ${PROJECT_NAME} PN)
 set(CPACK_PACKAGE_FILE_NAME ${PN}-${PROJECT_VERSION})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-set(CPACK_PACKAGE_CONTACT "roberto@linux.pl")
+set(CPACK_PACKAGE_CONTACT "roberto64dnp3oss@outlook.com")
 set(CPACK_PACKAGE_EXECUTABLES ${PROJECT_NAME} ${PROJECT_NAME})
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_HOME_DIRECTORY}/resources/LICENSE-2.0.txt")
 install(FILES ${wxWidgets_LIB_DIR}/wxbase30u_net_vc142_x64.dll  DESTINATION bin)
