@@ -36,7 +36,7 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_HOME_DIRECTORY}/resources/LICENSE-2.0.t
 if(WIN32)
     set(CPACK_GENERATOR NSIS64)
     set(INSTDIR "C:/Program\ Files\ \(x86\)/Microsoft\ Visual\ Studio/2022/BuildTools/VC/Redist/MSVC/v143")
-    list(APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS "ExecWait '${INSTDIR}/vc_redist.x64.exe'")
+    list(APPEND CPACK_NSIS_EXTRA_INSTALL_COMMANDS "ExecWait '${INSTDIR}/vc_redist.x64.exe /q /norestart'")
     string(REPLACE ";" "\n" CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${CPACK_NSIS_EXTRA_INSTALL_COMMANDS}")
     message(${CPACK_NSIS_EXTRA_INSTALL_COMMANDS})
 endif(WIN32)
