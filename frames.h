@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -281,6 +281,7 @@ class StateDialog : public wxDialog
 	protected:
 		wxPanel* m_panelStateDialog;
 		wxBoxSizer* bSizerStateDialog;
+		wxBoxSizer* bSizerValue;
 		wxStaticLine* m_staticline5;
 		wxCheckBox* m_checkBoxQuality7;
 		wxCheckBox* m_checkBoxQuality6;

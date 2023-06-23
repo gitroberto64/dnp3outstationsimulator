@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -388,7 +388,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridBinaryInput = new wxGrid( m_panelBinaryIn, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
 	// Grid
-	m_gridBinaryInput->CreateGrid( 0, 4 );
+	m_gridBinaryInput->CreateGrid( 0, 5 );
 	m_gridBinaryInput->EnableEditing( true );
 	m_gridBinaryInput->EnableGridLines( true );
 	m_gridBinaryInput->EnableDragGridSize( false );
@@ -405,6 +405,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridBinaryInput->SetColLabelValue( 1, wxT("Description") );
 	m_gridBinaryInput->SetColLabelValue( 2, wxT("State") );
 	m_gridBinaryInput->SetColLabelValue( 3, wxT("Flags") );
+	m_gridBinaryInput->SetColLabelValue( 4, wxT("Random") );
 	m_gridBinaryInput->SetColLabelSize( 30 );
 	m_gridBinaryInput->SetColLabelAlignment( wxALIGN_CENTER, wxALIGN_CENTER );
 
@@ -431,7 +432,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridDBinaryInput = new wxGrid( m_panelDBinaryIn, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
 	// Grid
-	m_gridDBinaryInput->CreateGrid( 0, 4 );
+	m_gridDBinaryInput->CreateGrid( 0, 5 );
 	m_gridDBinaryInput->EnableEditing( true );
 	m_gridDBinaryInput->EnableGridLines( true );
 	m_gridDBinaryInput->EnableDragGridSize( false );
@@ -448,6 +449,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridDBinaryInput->SetColLabelValue( 1, wxT("Description") );
 	m_gridDBinaryInput->SetColLabelValue( 2, wxT("State") );
 	m_gridDBinaryInput->SetColLabelValue( 3, wxT("Flags") );
+	m_gridDBinaryInput->SetColLabelValue( 4, wxT("Random") );
 	m_gridDBinaryInput->SetColLabelSize( 30 );
 	m_gridDBinaryInput->SetColLabelAlignment( wxALIGN_CENTER, wxALIGN_CENTER );
 
@@ -474,7 +476,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridAnalogInput = new wxGrid( m_panelAnalogIn, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
 	// Grid
-	m_gridAnalogInput->CreateGrid( 0, 4 );
+	m_gridAnalogInput->CreateGrid( 0, 5 );
 	m_gridAnalogInput->EnableEditing( true );
 	m_gridAnalogInput->EnableGridLines( true );
 	m_gridAnalogInput->EnableDragGridSize( false );
@@ -491,6 +493,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridAnalogInput->SetColLabelValue( 1, wxT("Description") );
 	m_gridAnalogInput->SetColLabelValue( 2, wxT("State") );
 	m_gridAnalogInput->SetColLabelValue( 3, wxT("Flags") );
+	m_gridAnalogInput->SetColLabelValue( 4, wxT("Random") );
 	m_gridAnalogInput->SetColLabelSize( 30 );
 	m_gridAnalogInput->SetColLabelAlignment( wxALIGN_CENTER, wxALIGN_CENTER );
 
@@ -517,7 +520,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridCounter = new wxGrid( m_panelCounter, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
 	// Grid
-	m_gridCounter->CreateGrid( 0, 4 );
+	m_gridCounter->CreateGrid( 0, 5 );
 	m_gridCounter->EnableEditing( true );
 	m_gridCounter->EnableGridLines( true );
 	m_gridCounter->EnableDragGridSize( false );
@@ -534,6 +537,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_gridCounter->SetColLabelValue( 1, wxT("Description") );
 	m_gridCounter->SetColLabelValue( 2, wxT("State") );
 	m_gridCounter->SetColLabelValue( 3, wxT("Flags") );
+	m_gridCounter->SetColLabelValue( 4, wxT("Increment") );
 	m_gridCounter->SetColLabelSize( 30 );
 	m_gridCounter->SetColLabelAlignment( wxALIGN_CENTER, wxALIGN_CENTER );
 
@@ -985,6 +989,11 @@ StateDialog::StateDialog( wxWindow* parent, wxWindowID id, const wxString& title
 
 	m_panelStateDialog = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	bSizerStateDialog = new wxBoxSizer( wxVERTICAL );
+
+	bSizerValue = new wxBoxSizer( wxHORIZONTAL );
+
+
+	bSizerStateDialog->Add( bSizerValue, 1, wxEXPAND, 5 );
 
 	m_staticline5 = new wxStaticLine( m_panelStateDialog, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	bSizerStateDialog->Add( m_staticline5, 0, wxEXPAND | wxALL, 5 );

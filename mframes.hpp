@@ -89,6 +89,8 @@ public:
     static const int col_descrypt;
     static const int col_value;
     static const int col_flags;
+    static const int col_random;
+    static const int col_increment;
 private:    
     opendnp3::OutstationStackConfig stackConfig;
     MSlave* m_slave;
@@ -181,52 +183,57 @@ struct SerialClientChannel : public ClientChannel
 class MStateDialog : public StateDialog
 {
 public:
-    MStateDialog(wxWindow *parent, std::function<void(const wxString &val, const wxString &qual)> fun);
+    typedef std::function<void(const wxString& val, const wxString& qual, const wxString& random)> OnChange;
+public:
+    MStateDialog(wxWindow *parent, OnChange fun);
     void StateDialogOnApplyButtonClick(wxCommandEvent &event) override;
     void StateDialogOnCancelButtonClick(wxCommandEvent &event) override;
     void StateDialogOnOKButtonClick(wxCommandEvent &event) override;
-    virtual void read(const wxString& old_val, const wxString& old_qual) = 0;
-    virtual void write(wxString& val, wxString& qual) = 0;
+    virtual void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) = 0;
+    virtual void write(wxString& val, wxString& qual, wxString& random) = 0;
 protected:
-    std::function<void(const wxString& val, const wxString& qual)> on_change;    
+    OnChange on_change;
 };
 
 class MBinaryDialog : public MStateDialog
 {
 public:
-    MBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, std::function<void (const wxString& val, const wxString& qual)> fun);
+    MBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
 private:
     wxCheckBox *binary_value;
-    void read(const wxString& old_val, const wxString& old_qual) override;
-    void write(wxString& val, wxString& qual) override;
+    wxCheckBox *random_value;
+    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void write(wxString& val, wxString& qual, wxString& random) override;
 };
 
 class MDBinaryDialog : public MStateDialog
 {
 public:
-    MDBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, std::function<void (const wxString& val, const wxString& qual)> fun);
+    MDBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
 private:
     wxComboBox *combo;
-    void read(const wxString& old_val, const wxString& old_qual) override;
-    void write(wxString& val, wxString& qual) override;
+    wxCheckBox *random_value;
+    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void write(wxString& val, wxString& qual, wxString& random) override;
 };
 
 class MAnalogDialog : public MStateDialog
 {
 public:
-    MAnalogDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, std::function<void (const wxString& val, const wxString& qual)> fun);
+    MAnalogDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual,const wxString& old_random, OnChange fun);
 private:
     wxTextCtrl *text;
-    void read(const wxString& old_val, const wxString& old_qual) override;
-    void write(wxString& val, wxString& qual) override;
+    wxTextCtrl *text_random;
+    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void write(wxString& val, wxString& qual, wxString& random) override;
 };
 
 class MCounterDialog : public MStateDialog
 {
 public:
-    MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, std::function<void (const wxString& val, const wxString& qual)> fun);
+    MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
 private:
     wxTextCtrl *text;
-    void read(const wxString& old_val, const wxString& old_qual) override;
-    void write(wxString& val, wxString& qual) override;
+    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void write(wxString& val, wxString& qual, wxString& random) override;
 };
