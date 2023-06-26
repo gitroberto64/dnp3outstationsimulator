@@ -133,6 +133,7 @@ private:
 	void OnSpinCtrlFCounter(wxSpinEvent& event) override final;
 	void OnSpinCtrlBinaryOutput(wxSpinEvent& event) override final;
 	void OnSpinCtrlAnalogOutput(wxSpinEvent& event) override final;
+    void OnCheckBoxLeftDown( wxMouseEvent& event ) override final;
     void OnGridCellChangeBinaryInput( wxGridEvent& event ) override final;
     void OnGridCellChangeDBinaryInput( wxGridEvent& event ) override final;
     void OnGridCellChangeAnalogInput( wxGridEvent& event ) override final;

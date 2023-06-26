@@ -961,6 +961,12 @@ void MPanelSlave::ReadStateFromGui()
         m_slave->UpdateBinary(bstate, quality_to_type<opendnp3::BinaryQualitySpec>(m_gridBinaryInput->GetCellValue(i, col_flags)),
                               std::stoul(m_gridBinaryInput->GetCellValue(i, col_index).ToStdString()));
     }
+    for (int i = 0; i < m_gridBinaryInput->GetNumberRows(); i++)
+    {
+        wxString state = m_gridBinaryInput->GetCellValue(i, col_random);
+        if(state == "ON")
+            m_slave->AddBinaryRandom(i);
+    }
     for (int i = 0; i < m_gridDBinaryInput->GetNumberRows(); i++)
     {
         std::string state = m_gridDBinaryInput->GetCellValue(i, col_value).ToStdString();
@@ -1022,6 +1028,10 @@ void MPanelSlave::SlaveStart()
             m_slave = new MSlave(this, static_cast<ClientChannel *>(mf->m_listBoxChannels->GetClientObject(sel))->channel, _name, opendnp3::levels::NORMAL, stackConfig);
             ReadStateFromGui();
             m_slave->Start();
+            if(m_checkBoxRandom->IsChecked())
+            {
+                m_slave->StartRandomize();
+            }
         }
         else
         {
@@ -1508,6 +1518,11 @@ void MPanelSlave::OnSpinCtrlAnalogOutput(wxSpinEvent &event)
         m_gridAnalogOut->DeleteRows(m_gridAnalogOut->GetNumberRows() + l, std::abs(l));
         m_gridAnalogOut->EndBatch();
     }
+}
+
+void MPanelSlave::OnCheckBoxLeftDown( wxMouseEvent& event )
+{
+    event.Skip();
 }
 
 void MPanelSlave::OnGridCellChangeBinaryInput(wxGridEvent &event)

@@ -133,6 +133,7 @@ opendnp3::ApplicationIIN MOutstationApplication::GetApplicationIIN() const
 
 MSlave::MSlave(MPanelSlave *ps, std::shared_ptr<opendnp3::IChannel> ch, const std::string &name, opendnp3::LogLevels fl, const opendnp3::OutstationStackConfig &cfg) : panel_slave(ps), stackconfig(cfg), moa(std::make_shared<MOutstationApplication>(this))
 {
+    work_random = false;
     _outstation = ch->AddOutstation(name.c_str(), std::make_shared<MCommandHandler>(this), moa, stackconfig);
 }
 
@@ -207,6 +208,7 @@ void MSlave::Start()
 
 void MSlave::Shutdown()
 {
+    StopRandomize();
     _outstation->Shutdown();
 }
 
@@ -217,11 +219,11 @@ void MSlave::StartRandomize()
         while (work_random)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            std::lock_guard<std::mutex> lg(randomize_mutex);
-            for (std::size_t i : binary_random)
+             for (std::size_t i : binary_random)
             {
                 bool v = rand() % 2;
                 builder.Update(opendnp3::Binary(v), i);
+                _outstation->Apply(builder.Build());
                 panel_slave->UpdateBinaryValueCell(i, v);
             }
         } });
@@ -229,8 +231,12 @@ void MSlave::StartRandomize()
 
 void MSlave::StopRandomize()
 {
-    work_random = false;
-    randomize_thread.join();
+    binary_random.clear();
+    if(work_random)
+    {
+        work_random = false;
+        randomize_thread.join();
+    }
 }
 
 class MChannelListener final : public opendnp3::IChannelListener, private opendnp3::Uncopyable

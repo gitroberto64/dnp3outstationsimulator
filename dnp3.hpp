@@ -18,7 +18,6 @@ Copyright [2022] [roberto64 (roberto64dnp3oss@outlook.com)]
 #include <bitset>
 #include <list>
 #include <thread>
-#include <mutex>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
 
@@ -85,6 +84,7 @@ public:
 
     void StartRandomize();
     void StopRandomize();
+    void AddBinaryRandom(std::size_t i) { binary_random.push_back(i); }
 
     struct AnalogRandom
     {
@@ -101,7 +101,6 @@ private:
     std::shared_ptr<opendnp3::IOutstation> _outstation;
     bool work_random;
     std::thread randomize_thread;
-    std::mutex randomize_mutex;
     std::list<std::size_t> binary_random;
     std::list<std::size_t> dbinary_random;
     std::list<AnalogRandom> analog_random;
