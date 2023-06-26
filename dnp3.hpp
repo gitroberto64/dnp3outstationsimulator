@@ -16,6 +16,9 @@ Copyright [2022] [roberto64 (roberto64dnp3oss@outlook.com)]
 #ifndef __DNP3H__
 #define __DNP3H__
 #include <bitset>
+#include <list>
+#include <thread>
+#include <mutex>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
 
@@ -78,8 +81,17 @@ public:
     void AddLog(const std::string& str);
 
     void Start();
-
     void Shutdown();
+
+    void StartRandomize();
+    void StopRandomize();
+
+    struct AnalogRandom
+    {
+        AnalogRandom(bool _index, double from, double to) : index(_index), range(std::make_pair(from, to)) {}
+        std::size_t index;
+        std::pair<double, double> range;
+    };
 
 private:
     MPanelSlave* panel_slave;
@@ -87,6 +99,13 @@ private:
     std::shared_ptr<MOutstationApplication> moa;
     opendnp3::UpdateBuilder builder;
     std::shared_ptr<opendnp3::IOutstation> _outstation;
+    bool work_random;
+    std::thread randomize_thread;
+    std::mutex randomize_mutex;
+    std::list<std::size_t> binary_random;
+    std::list<std::size_t> dbinary_random;
+    std::list<AnalogRandom> analog_random;
+    std::list<std::size_t> counter_increment;
 };
 
 class MFrame;

@@ -55,19 +55,19 @@ MFrame::MFrame() : MainFrame(NULL, wxID_ANY), mgr(this)
     last_serial_port = 0;
     last_number = 0;
     last_remote = 2;
-    thread_event_id = wxNewId();
+    frame_event_id = wxNewId();
     current_path = wxStandardPaths::Get().GetDocumentsDir();
     SetStatusBarPane(-1);    
     ReadProp();
     Center();    
     if (wxFileName(current_path).HasExt())
         LoadFromFile(current_path);
-    Connect(thread_event_id, wxCommandEventHandler(MFrame::OnThreadListLog));
+    Connect(frame_event_id, wxCommandEventHandler(MFrame::OnThreadListLog));
 }
 
 MFrame::~MFrame()
 {
-    thread_event_id = 0;
+    frame_event_id = 0;
     for (std::vector<wxAuiNotebook *>::iterator i = notebooks_slaves.begin(); i != notebooks_slaves.end(); i++)
         (*i)->Destroy();
     mgr.Shutdown();
@@ -76,9 +76,9 @@ MFrame::~MFrame()
 
 void MFrame::AddLog(const std::string &s)
 {
-    if (thread_event_id > 0)
+    if (frame_event_id > 0)
     {
-        wxCommandEvent e(thread_event_id);
+        wxCommandEvent e(frame_event_id);
         e.SetClientData(new std::string(s));
         wxPostEvent(GetEventHandler(), e);
     }
@@ -559,8 +559,8 @@ MPanelSlave::MPanelSlave(wxWindow *parent) : PanelSlave(parent)
     m_slave = NULL;
     // m_gridBinaryInput->SetSelectionMode(wxGrid::wxGridSelectRows);
     SetDefaultVariations();
-    thread_event_id = wxNewId();
-    Connect(thread_event_id, wxCommandEventHandler(MPanelSlave::OnThreadEvent));
+    panel_event_id = wxNewId();
+    Connect(panel_event_id, wxCommandEventHandler(MPanelSlave::OnPanelEvent));
 }
 
 MPanelSlave::~MPanelSlave()
@@ -932,11 +932,22 @@ void MPanelSlave::SelectConfig()
 
 void MPanelSlave::AddLog(const std::string &str)
 {
-    if (thread_event_id > 0)
+    if (panel_event_id > 0)
     {
-        wxCommandEvent e(thread_event_id);
+        wxCommandEvent e(panel_event_id);
         e.SetExtraLong(0);
         e.SetClientData(new std::string(str));
+        wxPostEvent(GetEventHandler(), e);
+    }
+}
+
+void MPanelSlave::UpdateBinaryValueCell(int row, bool value)
+{    
+    if (panel_event_id > 0)
+    {
+        wxCommandEvent e(panel_event_id);
+        e.SetExtraLong(1);
+        e.SetClientData(new Cell(m_gridBinaryInput, row, col_value, value ? "ON" : "OFF"));
         wxPostEvent(GetEventHandler(), e);
     }
 }
@@ -1503,7 +1514,7 @@ void MPanelSlave::OnGridCellChangeBinaryInput(wxGridEvent &event)
 {
     try
     {
-        if (event.GetCol() == col_value || event.GetCol() == col_flags)
+        if (event.GetCol() >= col_value)
         {
             if (m_slave)
             {
@@ -1534,7 +1545,7 @@ void MPanelSlave::OnGridCellChangeDBinaryInput(wxGridEvent &event)
 {
     try
     {
-        if (event.GetCol() == col_value || event.GetCol() == col_flags)
+        if (event.GetCol() >= col_value)
         {
             if (m_slave)
             {
@@ -1565,7 +1576,7 @@ void MPanelSlave::OnGridCellChangeAnalogInput(wxGridEvent &event)
 {
     try
     {
-        if (event.GetCol() == col_value || event.GetCol() == col_flags)
+        if (event.GetCol() >= col_value)
         {
             if (m_slave)
             {
@@ -1599,22 +1610,22 @@ void MPanelSlave::OnGridCellChangeCounter(wxGridEvent &event)
 {
     try
     {
-        if (event.GetCol() == col_value || event.GetCol() == col_flags)
+        if (event.GetCol() >= col_value)
         {
             if (m_slave)
             {
                 wxString state = m_gridCounter->GetCellValue(event.GetRow(), col_value);
                 wxString quality = m_gridCounter->GetCellValue(event.GetRow(), col_flags);
-                wxString random = m_gridCounter->GetCellValue(event.GetRow(), col_random);
-                auto sd = new MCounterDialog(this, state, quality, random,
-                                             [this, &event](const wxString &val, const wxString &qual, const wxString &rand)
+                wxString increment = m_gridCounter->GetCellValue(event.GetRow(), col_increment);
+                auto sd = new MCounterDialog(this, state, quality, increment,
+                                             [this, &event](const wxString &val, const wxString &qual, const wxString &inc)
                                              {
                                                  auto dbs = std::stoul(val.ToStdString());
                                                  m_slave->UpdateCounter(dbs, quality_to_type<opendnp3::CounterQualitySpec>(qual),
                                                                         std::stoul(m_gridCounter->GetCellValue(event.GetRow(), col_index).ToStdString()));
                                                  m_gridCounter->SetCellValue(event.GetRow(), col_value, val);
                                                  m_gridCounter->SetCellValue(event.GetRow(), col_flags, qual);
-                                                 m_gridCounter->SetCellValue(event.GetRow(), col_random, rand);
+                                                 m_gridCounter->SetCellValue(event.GetRow(), col_increment, inc);
                                              });
                 sd->ShowModal();
             }
@@ -1728,7 +1739,7 @@ void MPanelSlave::OnButtonClickSlaveStop(wxCommandEvent &event)
     }
 }
 
-void MPanelSlave::OnThreadEvent(wxCommandEvent &e)
+void MPanelSlave::OnPanelEvent(wxCommandEvent &e)
 {
     if (e.GetExtraLong() == 0)
     {
@@ -1740,6 +1751,12 @@ void MPanelSlave::OnThreadEvent(wxCommandEvent &e)
         m_listBoxSlave->Select(m_listBoxSlave->GetCount() - 1);
         m_listBoxSlave->Thaw();
         delete str;
+    }
+    else
+    {
+        Cell* cell = static_cast<Cell*>(e.GetClientData());
+        cell->grid->SetCellValue(cell->value, cell->row, cell->col);
+        delete cell;
     }
 }
 
@@ -1873,8 +1890,7 @@ MStateDialog::MStateDialog(wxWindow *parent, OnChange fun) : StateDialog(parent)
 
 void MStateDialog::StateDialogOnApplyButtonClick(wxCommandEvent &event)
 {
-    wxString v, q, r;
-    write(v, q, r);
+    write();
 }
 
 void MStateDialog::StateDialogOnCancelButtonClick(wxCommandEvent &event)
@@ -1884,8 +1900,7 @@ void MStateDialog::StateDialogOnCancelButtonClick(wxCommandEvent &event)
 
 void MStateDialog::StateDialogOnOKButtonClick(wxCommandEvent &event)
 {
-    wxString v, q, r;
-    write(v, q, r);
+    write();
     EndModal(wxID_OK);
 }
 
@@ -1924,8 +1939,9 @@ void MBinaryDialog::read(const wxString &old_val, const wxString &old_qual, cons
     m_checkBoxQuality7->Disable();
 }
 
-void MBinaryDialog::write(wxString &val, wxString &qual, wxString &random)
+void MBinaryDialog::write()
 {
+    wxString val, qual, random;
     val = binary_value->IsChecked() ? "ON" : "OFF";
     qual =  (m_checkBoxQuality6->IsChecked() ? opendnp3::BinaryQualitySpec::to_string(opendnp3::BinaryQuality::RESERVED) + wxString(" ") : "");
     qual +=  (m_checkBoxQuality5->IsChecked() ? opendnp3::BinaryQualitySpec::to_string(opendnp3::BinaryQuality::CHATTER_FILTER) + wxString(" ") : "");
@@ -1977,8 +1993,9 @@ void MDBinaryDialog::read(const wxString &old_val, const wxString &old_qual, con
     m_checkBoxQuality7->Disable();
 }
 
-void MDBinaryDialog::write(wxString &val, wxString &qual, wxString& random)
+void MDBinaryDialog::write()
 {
+    wxString val, qual, random;
     val = combo->GetValue();
     qual = (m_checkBoxQuality5->IsChecked() ? opendnp3::DoubleBitBinaryQualitySpec::to_string(opendnp3::DoubleBitBinaryQuality::CHATTER_FILTER) + wxString(" ") : "");
     qual += (m_checkBoxQuality4->IsChecked() ? opendnp3::DoubleBitBinaryQualitySpec::to_string(opendnp3::DoubleBitBinaryQuality::LOCAL_FORCED) + wxString(" ") : "");
@@ -2023,8 +2040,9 @@ void MAnalogDialog::read(const wxString &old_val, const wxString &old_qual, cons
     m_checkBoxQuality7->SetValue(f.IsSet(opendnp3::AnalogQuality::RESERVED));
 }
 
-void MAnalogDialog::write(wxString &val, wxString &qual, wxString &random)
+void MAnalogDialog::write()
 {
+    wxString val, qual, random;
     val = text->GetValue();
     qual = (m_checkBoxQuality7->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::RESERVED) + wxString(" ") : "");
     qual += (m_checkBoxQuality6->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::REFERENCE_ERR) + wxString(" ") : "");
@@ -2034,13 +2052,19 @@ void MAnalogDialog::write(wxString &val, wxString &qual, wxString &random)
     qual += (m_checkBoxQuality2->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::COMM_LOST) + wxString(" ") : "");
     qual += (m_checkBoxQuality1->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::RESTART) + wxString(" ") : "");
     qual += (m_checkBoxQuality0->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::ONLINE) : "");
+    random = text_random->GetValue();
     on_change(val, qual, random);
 }
 
 MCounterDialog::MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun) : MStateDialog(parent, fun)
 {
     text = new wxTextCtrl(m_panelStateDialog, wxID_ANY, old_val, wxDefaultPosition, wxDefaultSize);
-    bSizerStateDialog->Insert(0, text, 0, wxALL, 5);
+    bSizerValue->Add(text, 0, wxALL, 5);
+    bSizerValue->AddStretchSpacer();
+    increment_value = new wxCheckBox(m_panelStateDialog, wxID_ANY, wxT("Increment"), wxDefaultPosition, wxDefaultSize, 0);
+    increment_value->SetValue(old_random == "ON" ? true : false);
+    bSizerValue->Add(increment_value, 0, wxALL, 5);
+
     Fit();
     read(old_val, old_qual, old_random);
 }
@@ -2066,8 +2090,9 @@ void MCounterDialog::read(const wxString &old_val, const wxString &old_qual, con
     m_checkBoxQuality7->SetValue(f.IsSet(opendnp3::CounterQuality::RESERVED));
 }
 
-void MCounterDialog::write(wxString &val, wxString &qual, wxString &random)
+void MCounterDialog::write()
 {
+    wxString val, qual, random;
     val = text->GetValue();
     qual = (m_checkBoxQuality7->IsChecked() ? opendnp3::CounterQualitySpec::to_string(opendnp3::CounterQuality::RESERVED) + wxString(" ") : "");
     qual += (m_checkBoxQuality6->IsChecked() ? opendnp3::CounterQualitySpec::to_string(opendnp3::CounterQuality::DISCONTINUITY) + wxString(" ") : "");
@@ -2077,5 +2102,6 @@ void MCounterDialog::write(wxString &val, wxString &qual, wxString &random)
     qual += (m_checkBoxQuality2->IsChecked() ? opendnp3::CounterQualitySpec::to_string(opendnp3::CounterQuality::COMM_LOST) + wxString(" ") : "");
     qual += (m_checkBoxQuality1->IsChecked() ? opendnp3::CounterQualitySpec::to_string(opendnp3::CounterQuality::RESTART) + wxString(" ") : "");
     qual += (m_checkBoxQuality0->IsChecked() ? opendnp3::CounterQualitySpec::to_string(opendnp3::CounterQuality::ONLINE) : "");
+    random = increment_value->IsChecked() ? "ON" : "OFF";
     on_change(val, qual, random);
 }

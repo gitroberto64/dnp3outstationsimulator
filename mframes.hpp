@@ -70,7 +70,7 @@ private:
     std::uint16_t last_number;
     std::uint16_t last_remote;
     std::vector<wxAuiNotebook*> notebooks_slaves;
-    int thread_event_id;
+    int frame_event_id;
     wxString current_path; 
 };
 
@@ -84,6 +84,7 @@ public:
     void SaveToXML(wxXmlNode* ele);
     void SelectConfig();
     void AddLog(const std::string& str);
+    void UpdateBinaryValueCell(int row, bool value);
     const wxString GetSlaveName() const { return m_textCtrlSlaveName->GetValue(); }
     static const int col_index;
     static const int col_descrypt;
@@ -92,10 +93,18 @@ public:
     static const int col_random;
     static const int col_increment;
 private:    
+    struct Cell
+    {
+        Cell(wxGrid* _grid, int _row, int _col, const wxString& _value) : grid(_grid), row(_row), col(_col), value(_value) {}
+        wxGrid* grid;
+        int row;
+        int col;
+        wxString value;
+    };
     opendnp3::OutstationStackConfig stackConfig;
     MSlave* m_slave;
     std::string _name;
-    int thread_event_id;
+    int panel_event_id;
     void ReadSlaveConfig();
     void DeleteObjects();
     void ReadStateFromGui();
@@ -134,7 +143,7 @@ private:
     void OnButtonClickSlaveStart( wxCommandEvent& event ) override final;
     void OnButtonClickSlaveRestart( wxCommandEvent& event ) override final;
     void OnButtonClickSlaveStop( wxCommandEvent& event ) override final;
-    void OnThreadEvent(wxCommandEvent& e);
+    void OnPanelEvent(wxCommandEvent& e);
 };
 
 class MSerialParamDialog : public SerialParamDialog
@@ -186,11 +195,12 @@ public:
     typedef std::function<void(const wxString& val, const wxString& qual, const wxString& random)> OnChange;
 public:
     MStateDialog(wxWindow *parent, OnChange fun);
+private:
     void StateDialogOnApplyButtonClick(wxCommandEvent &event) override;
     void StateDialogOnCancelButtonClick(wxCommandEvent &event) override;
     void StateDialogOnOKButtonClick(wxCommandEvent &event) override;
     virtual void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) = 0;
-    virtual void write(wxString& val, wxString& qual, wxString& random) = 0;
+    virtual void write() = 0;
 protected:
     OnChange on_change;
 };
@@ -203,7 +213,7 @@ private:
     wxCheckBox *binary_value;
     wxCheckBox *random_value;
     void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
-    void write(wxString& val, wxString& qual, wxString& random) override;
+    void write() override;
 };
 
 class MDBinaryDialog : public MStateDialog
@@ -214,7 +224,7 @@ private:
     wxComboBox *combo;
     wxCheckBox *random_value;
     void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
-    void write(wxString& val, wxString& qual, wxString& random) override;
+    void write() override;
 };
 
 class MAnalogDialog : public MStateDialog
@@ -225,7 +235,7 @@ private:
     wxTextCtrl *text;
     wxTextCtrl *text_random;
     void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
-    void write(wxString& val, wxString& qual, wxString& random) override;
+    void write() override;
 };
 
 class MCounterDialog : public MStateDialog
@@ -234,6 +244,7 @@ public:
     MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
 private:
     wxTextCtrl *text;
+    wxCheckBox *increment_value;
     void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
-    void write(wxString& val, wxString& qual, wxString& random) override;
+    void write() override;
 };
