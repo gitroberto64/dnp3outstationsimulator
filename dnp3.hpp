@@ -82,7 +82,7 @@ public:
     void Start();
     void Shutdown();
 
-    void StartRandomize();
+    void StartRandomize(std::size_t ms);
     void StopRandomize();
     void AddBinaryRandom(std::size_t i) { binary_random.push_back(i); }
 

@@ -131,7 +131,6 @@ class PanelSlave : public wxPanel
 		wxChoice* m_choiceEventFCounter;
 		wxChoice* m_choiceEventBinaryOutput;
 		wxChoice* m_choiceEventAnalogOutput;
-		wxCheckBox* m_checkBoxRandom;
 		wxPanel* m_panelBinaryIn;
 		wxGrid* m_gridBinaryInput;
 		wxPanel* m_panelDBinaryIn;
@@ -151,6 +150,8 @@ class PanelSlave : public wxPanel
 		wxButton* m_buttonSlaveRestart;
 		wxButton* m_buttonStop;
 		wxButton* m_buttonSyncTime;
+		wxCheckBox* m_checkBoxRandom;
+		wxSpinCtrl* m_spinCtrlRandom;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnSpinCtrlBinaryInput( wxSpinEvent& event ) { event.Skip(); }
@@ -174,7 +175,6 @@ class PanelSlave : public wxPanel
 		virtual void OnChoiceFCounterEvent( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceBinaryOutputEvent( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnChoiceAnalogOutputEvent( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnCheckBoxLeftDown( wxMouseEvent& event ) { event.Skip(); }
 		virtual void OnGridCellChangeBinaryInput( wxGridEvent& event ) { event.Skip(); }
 		virtual void OnGridCellChangeDBinaryInput( wxGridEvent& event ) { event.Skip(); }
 		virtual void OnGridCellChangeAnalogInput( wxGridEvent& event ) { event.Skip(); }
@@ -186,6 +186,7 @@ class PanelSlave : public wxPanel
 		virtual void OnButtonClickSlaveRestart( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonClickSlaveStop( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnButtonSyncTimeClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCheckBoxLeftDown( wxMouseEvent& event ) { event.Skip(); }
 
 
 	public:

@@ -370,15 +370,6 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 
 	bSizer7->Add( bSizer27, 0, wxALL|wxEXPAND, 5 );
 
-	wxBoxSizer* bSizer25;
-	bSizer25 = new wxBoxSizer( wxHORIZONTAL );
-
-	m_checkBoxRandom = new wxCheckBox( m_scrolledWindow2, wxID_ANY, wxT("Random"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer25->Add( m_checkBoxRandom, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-
-	bSizer7->Add( bSizer25, 1, wxEXPAND, 5 );
-
 
 	m_scrolledWindow2->SetSizer( bSizer7 );
 	m_scrolledWindow2->Layout();
@@ -714,16 +705,28 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	bSizer9 = new wxBoxSizer( wxHORIZONTAL );
 
 	m_buttonSlaveStart = new wxButton( this, wxID_ANY, wxT("Start"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer9->Add( m_buttonSlaveStart, 1, wxALL, 1 );
+	bSizer9->Add( m_buttonSlaveStart, 1, wxALIGN_CENTER_VERTICAL|wxALL, 1 );
 
 	m_buttonSlaveRestart = new wxButton( this, wxID_ANY, wxT("Restart"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer9->Add( m_buttonSlaveRestart, 1, wxALL, 1 );
+	bSizer9->Add( m_buttonSlaveRestart, 1, wxALIGN_CENTER_VERTICAL|wxALL, 1 );
 
 	m_buttonStop = new wxButton( this, wxID_ANY, wxT("Stop"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer9->Add( m_buttonStop, 1, wxALL, 1 );
+	bSizer9->Add( m_buttonStop, 1, wxALIGN_CENTER_VERTICAL|wxALL, 1 );
 
 	m_buttonSyncTime = new wxButton( this, wxID_ANY, wxT("Need Time Sync"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer9->Add( m_buttonSyncTime, 1, wxALL, 1 );
+	bSizer9->Add( m_buttonSyncTime, 1, wxALIGN_CENTER_VERTICAL|wxALL, 1 );
+
+	wxBoxSizer* bSizer25;
+	bSizer25 = new wxBoxSizer( wxHORIZONTAL );
+
+	m_checkBoxRandom = new wxCheckBox( this, wxID_ANY, wxT("Random(ms)"), wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer25->Add( m_checkBoxRandom, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+	m_spinCtrlRandom = new wxSpinCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 140,-1 ), wxSP_ARROW_KEYS, 10, 999999, 100 );
+	bSizer25->Add( m_spinCtrlRandom, 0, wxALL, 5 );
+
+
+	bSizer9->Add( bSizer25, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
 
 	bSizer6->Add( bSizer9, 0, wxEXPAND, 0 );
@@ -754,7 +757,6 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_choiceEventFCounter->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PanelSlave::OnChoiceFCounterEvent ), NULL, this );
 	m_choiceEventBinaryOutput->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PanelSlave::OnChoiceBinaryOutputEvent ), NULL, this );
 	m_choiceEventAnalogOutput->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PanelSlave::OnChoiceAnalogOutputEvent ), NULL, this );
-	m_checkBoxRandom->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PanelSlave::OnCheckBoxLeftDown ), NULL, this );
 	m_gridBinaryInput->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( PanelSlave::OnGridCellChangeBinaryInput ), NULL, this );
 	m_gridDBinaryInput->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( PanelSlave::OnGridCellChangeDBinaryInput ), NULL, this );
 	m_gridAnalogInput->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( PanelSlave::OnGridCellChangeAnalogInput ), NULL, this );
@@ -766,6 +768,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_buttonSlaveRestart->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PanelSlave::OnButtonClickSlaveRestart ), NULL, this );
 	m_buttonStop->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PanelSlave::OnButtonClickSlaveStop ), NULL, this );
 	m_buttonSyncTime->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PanelSlave::OnButtonSyncTimeClick ), NULL, this );
+	m_checkBoxRandom->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PanelSlave::OnCheckBoxLeftDown ), NULL, this );
 }
 
 PanelSlave::~PanelSlave()
@@ -792,7 +795,6 @@ PanelSlave::~PanelSlave()
 	m_choiceEventFCounter->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PanelSlave::OnChoiceFCounterEvent ), NULL, this );
 	m_choiceEventBinaryOutput->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PanelSlave::OnChoiceBinaryOutputEvent ), NULL, this );
 	m_choiceEventAnalogOutput->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( PanelSlave::OnChoiceAnalogOutputEvent ), NULL, this );
-	m_checkBoxRandom->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PanelSlave::OnCheckBoxLeftDown ), NULL, this );
 	m_gridBinaryInput->Disconnect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( PanelSlave::OnGridCellChangeBinaryInput ), NULL, this );
 	m_gridDBinaryInput->Disconnect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( PanelSlave::OnGridCellChangeDBinaryInput ), NULL, this );
 	m_gridAnalogInput->Disconnect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( PanelSlave::OnGridCellChangeAnalogInput ), NULL, this );
@@ -804,6 +806,7 @@ PanelSlave::~PanelSlave()
 	m_buttonSlaveRestart->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PanelSlave::OnButtonClickSlaveRestart ), NULL, this );
 	m_buttonStop->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PanelSlave::OnButtonClickSlaveStop ), NULL, this );
 	m_buttonSyncTime->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( PanelSlave::OnButtonSyncTimeClick ), NULL, this );
+	m_checkBoxRandom->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PanelSlave::OnCheckBoxLeftDown ), NULL, this );
 
 }
 

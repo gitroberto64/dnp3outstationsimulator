@@ -193,14 +193,14 @@ struct SerialClientChannel : public ClientChannel
 class MStateDialog : public StateDialog
 {
 public:
-    typedef std::function<void(const wxString& val, const wxString& qual, const wxString& random)> OnChange;
+    typedef std::function<void(const wxString& val, const wxString& qual)> OnChange;
 public:
     MStateDialog(wxWindow *parent, OnChange fun);
 private:
     void StateDialogOnApplyButtonClick(wxCommandEvent &event) override;
     void StateDialogOnCancelButtonClick(wxCommandEvent &event) override;
     void StateDialogOnOKButtonClick(wxCommandEvent &event) override;
-    virtual void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) = 0;
+    virtual void read(const wxString& old_val, const wxString& old_qual) = 0;
     virtual void write() = 0;
 protected:
     OnChange on_change;
@@ -209,43 +209,39 @@ protected:
 class MBinaryDialog : public MStateDialog
 {
 public:
-    MBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
+    MBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxCheckBox *binary_value;
-    wxCheckBox *random_value;
-    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void read(const wxString& old_val, const wxString& old_qual) override;
     void write() override;
 };
 
 class MDBinaryDialog : public MStateDialog
 {
 public:
-    MDBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
+    MDBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxComboBox *combo;
-    wxCheckBox *random_value;
-    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void read(const wxString& old_val, const wxString& old_qual) override;
     void write() override;
 };
 
 class MAnalogDialog : public MStateDialog
 {
 public:
-    MAnalogDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual,const wxString& old_random, OnChange fun);
+    MAnalogDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxTextCtrl *text;
-    wxTextCtrl *text_random;
-    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void read(const wxString& old_val, const wxString& old_qual) override;
     void write() override;
 };
 
 class MCounterDialog : public MStateDialog
 {
 public:
-    MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, const wxString& old_random, OnChange fun);
+    MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxTextCtrl *text;
-    wxCheckBox *increment_value;
-    void read(const wxString& old_val, const wxString& old_qual, const wxString &old_random) override;
+    void read(const wxString& old_val, const wxString& old_qual) override;
     void write() override;
 };

@@ -212,31 +212,38 @@ void MSlave::Shutdown()
     _outstation->Shutdown();
 }
 
-void MSlave::StartRandomize()
+void MSlave::StartRandomize(std::size_t ms)
 {
     work_random = true;
-    randomize_thread = std::thread([this]() {
+    randomize_thread = std::thread([this, ms]() {
+        std::chrono::steady_clock::time_point tp = std::chrono::steady_clock::now();
         while (work_random)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-             for (std::size_t i : binary_random)
+            std::this_thread::sleep_for(std::chrono::milliseconds(9));
+            if(tp + std::chrono::milliseconds(ms) <= std::chrono::steady_clock::now())
             {
-                bool v = rand() % 2;
-                builder.Update(opendnp3::Binary(v), i);
-                _outstation->Apply(builder.Build());
-                panel_slave->UpdateBinaryValueCell(i, v);
+                tp = std::chrono::steady_clock::now();
+                for (std::size_t i : binary_random)
+                {
+                    bool v = rand() % 2;
+                    opendnp3::Flags f;
+                    f.Set(opendnp3::BinaryQuality::ONLINE);
+                    builder.Update(opendnp3::Binary(v, f, moa->Now()), i);
+                    _outstation->Apply(builder.Build());
+                    panel_slave->UpdateBinaryValueCell(i, v);
+                }
             }
         } });
 }
 
 void MSlave::StopRandomize()
 {
-    binary_random.clear();
     if(work_random)
     {
         work_random = false;
         randomize_thread.join();
     }
+    binary_random.clear();    
 }
 
 class MChannelListener final : public opendnp3::IChannelListener, private opendnp3::Uncopyable
