@@ -19,6 +19,7 @@ Copyright [2022] [roberto64 (roberto64dnp3oss@outlook.com)]
 #include <bitset>
 #include <thread>
 #include <sstream>
+#include <regex>
 #include <wx/app.h>
 #include <wx/aboutdlg.h>
 #include <wx/msgdlg.h>
@@ -953,6 +954,39 @@ void MPanelSlave::UpdateBinaryValueCell(int row, bool value)
     }
 }
 
+void MPanelSlave::UpdateDBinaryValueCell(int row, opendnp3::DoubleBit value)
+{    
+    if (panel_event_id > 0)
+    {
+        wxCommandEvent e(panel_event_id);
+        e.SetExtraLong(1);
+        e.SetClientData(new Cell(m_gridDBinaryInput, row, col_value, opendnp3::DoubleBitSpec::to_string(value)));
+        wxPostEvent(GetEventHandler(), e);
+    }
+}
+
+void MPanelSlave::UpdateAnalogValueCell(int row, double value)
+{    
+    if (panel_event_id > 0)
+    {
+        wxCommandEvent e(panel_event_id);
+        e.SetExtraLong(1);
+        e.SetClientData(new Cell(m_gridAnalogInput, row, col_value, std::to_string(value)));
+        wxPostEvent(GetEventHandler(), e);
+    }
+}
+
+void MPanelSlave::UpdateCounterValueCell(int row, std::uint32_t value)
+{    
+    if (panel_event_id > 0)
+    {
+        wxCommandEvent e(panel_event_id);
+        e.SetExtraLong(1);
+        e.SetClientData(new Cell(m_gridCounter, row, col_value, std::to_string(value)));
+        wxPostEvent(GetEventHandler(), e);
+    }
+}
+
 void MPanelSlave::ReadStateFromGui()
 {
     for (int i = 0; i < m_gridBinaryInput->GetNumberRows(); i++)
@@ -983,6 +1017,12 @@ void MPanelSlave::ReadStateFromGui()
         m_slave->UpdateDouble(db, quality_to_type<opendnp3::DoubleBitBinaryQualitySpec>(m_gridDBinaryInput->GetCellValue(i, col_flags)),
                               std::stoul(m_gridDBinaryInput->GetCellValue(i, col_index).ToStdString()));
     }
+    for (int i = 0; i < m_gridDBinaryInput->GetNumberRows(); i++)
+    {
+        wxString state = m_gridDBinaryInput->GetCellValue(i, col_random);
+        if(state == "ON")
+            m_slave->AddDBinaryRandom(i);
+    }
     for (int i = 0; i < m_gridAnalogInput->GetNumberRows(); i++)
     {
         wxString v = m_gridAnalogInput->GetCellValue(i, col_value);
@@ -990,11 +1030,36 @@ void MPanelSlave::ReadStateFromGui()
         m_slave->UpdateAnalog(state, quality_to_type<opendnp3::AnalogQualitySpec>(m_gridAnalogInput->GetCellValue(i, col_flags)),
                               std::stoul(m_gridAnalogInput->GetCellValue(i, col_index).ToStdString()));
     }
+    for (int i = 0; i < m_gridAnalogInput->GetNumberRows(); i++)
+    {
+        const wxString state = m_gridAnalogInput->GetCellValue(i, col_random);
+        if(state != "OFF")
+        {
+            const std::string s = state.ToStdString();
+            const std::regex pattern(R"((-?\d+(\.\d+)?)\s*-\s*(-?\d+(\.\d+)?))");
+            std::smatch matches;
+            if (std::regex_match(s, matches, pattern)) {
+                const double first = std::stod(matches[1]);
+                const double second = std::stod(matches[3]);
+                m_slave->AddAnalogRandom(i, first, second);
+            }
+            else
+            {
+                m_gridAnalogInput->SetCellValue(i, col_random, "OFF");
+            }
+        }
+    }
     for (int i = 0; i < m_gridCounter->GetNumberRows(); i++)
     {
         std::uint32_t state = std::stoi(m_gridCounter->GetCellValue(i, col_value).ToStdString());
         m_slave->UpdateCounter(state, quality_to_type<opendnp3::CounterQualitySpec>(m_gridCounter->GetCellValue(i, col_flags)),
                                std::stoul(m_gridCounter->GetCellValue(i, col_index).ToStdString()));
+    }
+    for (int i = 0; i < m_gridCounter->GetNumberRows(); i++)
+    {
+        wxString state = m_gridCounter->GetCellValue(i, col_increment);
+        if(state == "ON")
+            m_slave->AddCounterIncrement(i);
     }
     for (int i = 0; i < m_gridFCounter->GetNumberRows(); i++)
     {
@@ -1193,6 +1258,7 @@ void MPanelSlave::LoadAnalogInput(const wxXmlNode *ele)
         wxString desc = item->GetAttribute("Description");
         wxString fl = item->GetAttribute("Flags");
         wxString rand = item->GetAttribute("Random", "OFF");
+        val.Replace(',', '.');
 
         m_gridAnalogInput->BeginBatch();
         m_gridAnalogInput->SetCellValue(index, col_index, sindex);
@@ -1605,16 +1671,18 @@ void MPanelSlave::OnGridCellChangeAnalogInput(wxGridEvent &event)
                 auto sd = new MAnalogDialog(this, state, quality,
                                             [this, &event](const wxString &val, const wxString &qual)
                                             {
-                                                wxString v = val;
-                                                v.Replace(".", ",");
-                                                double dbs = std::stod(v.ToStdString());
+                                                double dbs = std::stod(val.ToStdString());
                                                 m_slave->UpdateAnalog(dbs, quality_to_type<opendnp3::AnalogQualitySpec>(qual),
                                                                       std::stoul(m_gridAnalogInput->GetCellValue(event.GetRow(), col_index).ToStdString()));
-                                                m_gridAnalogInput->SetCellValue(event.GetRow(), col_value, v);
+                                                m_gridAnalogInput->SetCellValue(event.GetRow(), col_value, val);
                                                 m_gridAnalogInput->SetCellValue(event.GetRow(), col_flags, qual);
                                             });
                 sd->ShowModal();
             }
+        }
+        else if(event.GetCol() == col_random)
+        {
+            
         }
     }
     catch (const std::exception &e)
@@ -2046,6 +2114,7 @@ void MAnalogDialog::write()
 {
     wxString val, qual;
     val = text->GetValue();
+    val.Replace(',', '.');
     qual = (m_checkBoxQuality7->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::RESERVED) + wxString(" ") : "");
     qual += (m_checkBoxQuality6->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::REFERENCE_ERR) + wxString(" ") : "");
     qual += (m_checkBoxQuality5->IsChecked() ? opendnp3::AnalogQualitySpec::to_string(opendnp3::AnalogQuality::OVERRANGE) + wxString(" ") : "");

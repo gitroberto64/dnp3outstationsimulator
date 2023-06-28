@@ -85,6 +85,9 @@ public:
     void SelectConfig();
     void AddLog(const std::string& str);
     void UpdateBinaryValueCell(int row, bool value);
+    void UpdateDBinaryValueCell(int row, opendnp3::DoubleBit value);
+    void UpdateAnalogValueCell(int row, double value);
+    void UpdateCounterValueCell(int row, std::uint32_t value);
     const wxString GetSlaveName() const { return m_textCtrlSlaveName->GetValue(); }
     static const int col_index;
     static const int col_descrypt;
@@ -200,7 +203,6 @@ private:
     void StateDialogOnApplyButtonClick(wxCommandEvent &event) override;
     void StateDialogOnCancelButtonClick(wxCommandEvent &event) override;
     void StateDialogOnOKButtonClick(wxCommandEvent &event) override;
-    virtual void read(const wxString& old_val, const wxString& old_qual) = 0;
     virtual void write() = 0;
 protected:
     OnChange on_change;
@@ -212,7 +214,7 @@ public:
     MBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxCheckBox *binary_value;
-    void read(const wxString& old_val, const wxString& old_qual) override;
+    void read(const wxString& old_val, const wxString& old_qual);
     void write() override;
 };
 
@@ -222,7 +224,7 @@ public:
     MDBinaryDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxComboBox *combo;
-    void read(const wxString& old_val, const wxString& old_qual) override;
+    void read(const wxString& old_val, const wxString& old_qual);
     void write() override;
 };
 
@@ -232,7 +234,7 @@ public:
     MAnalogDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxTextCtrl *text;
-    void read(const wxString& old_val, const wxString& old_qual) override;
+    void read(const wxString& old_val, const wxString& old_qual);
     void write() override;
 };
 
@@ -242,6 +244,6 @@ public:
     MCounterDialog(wxWindow* parent, const wxString& old_val, const wxString& old_qual, OnChange fun);
 private:
     wxTextCtrl *text;
-    void read(const wxString& old_val, const wxString& old_qual) override;
+    void read(const wxString& old_val, const wxString& old_qual);
     void write() override;
 };

@@ -65,6 +65,12 @@ class MPanelSlave;
 
 class MSlave
 {
+    struct AnalogRandom
+    {
+        AnalogRandom(std::size_t _index, double from, double to) : index(_index), range(std::make_pair(from, to)) {}
+        std::size_t index;
+        std::pair<double, double> range;
+    };
 public:
 	MSlave(MPanelSlave* ps, std::shared_ptr<opendnp3::IChannel> ch,const std::string& name,opendnp3::LogLevels fl,const opendnp3::OutstationStackConfig& cfg);
 	~MSlave() { }
@@ -85,13 +91,9 @@ public:
     void StartRandomize(std::size_t ms);
     void StopRandomize();
     void AddBinaryRandom(std::size_t i) { binary_random.push_back(i); }
-
-    struct AnalogRandom
-    {
-        AnalogRandom(bool _index, double from, double to) : index(_index), range(std::make_pair(from, to)) {}
-        std::size_t index;
-        std::pair<double, double> range;
-    };
+    void AddDBinaryRandom(std::size_t i) { dbinary_random.push_back(i); }
+    void AddAnalogRandom(std::size_t i, double from, double to) { analog_random.push_back(AnalogRandom(i, from, to)); }
+    void AddCounterIncrement(std::size_t i) { counter_increment.push_back(std::make_pair(i, 0)); }
 
 private:
     MPanelSlave* panel_slave;
@@ -104,7 +106,7 @@ private:
     std::list<std::size_t> binary_random;
     std::list<std::size_t> dbinary_random;
     std::list<AnalogRandom> analog_random;
-    std::list<std::size_t> counter_increment;
+    std::list<std::pair<std::size_t, std::uint32_t>> counter_increment;
 };
 
 class MFrame;

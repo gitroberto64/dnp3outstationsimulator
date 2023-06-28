@@ -214,6 +214,7 @@ void MSlave::Shutdown()
 
 void MSlave::StartRandomize(std::size_t ms)
 {
+    std::srand(std::time(nullptr));
     work_random = true;
     randomize_thread = std::thread([this, ms]() {
         std::chrono::steady_clock::time_point tp = std::chrono::steady_clock::now();
@@ -232,6 +233,35 @@ void MSlave::StartRandomize(std::size_t ms)
                     _outstation->Apply(builder.Build());
                     panel_slave->UpdateBinaryValueCell(i, v);
                 }
+                for (std::size_t i : dbinary_random)
+                {
+                    
+                    const opendnp3::DoubleBit v(opendnp3::DoubleBit(rand() % 4));
+                    opendnp3::Flags f;
+                    f.Set(opendnp3::DoubleBitBinaryQuality::ONLINE);
+                    builder.Update(opendnp3::DoubleBitBinary(v, f, moa->Now()), i);
+                    _outstation->Apply(builder.Build());
+                    panel_slave->UpdateDBinaryValueCell(i, v);
+                }
+                for (AnalogRandom ar : analog_random)
+                {
+                    
+                    const double v = ((double(rand()) * (ar.range.second - ar.range.first)) / RAND_MAX) + ar.range.first;
+                    opendnp3::Flags f;
+                    f.Set(opendnp3::AnalogQuality::ONLINE);
+                    builder.Update(opendnp3::Analog(v, f, moa->Now()), ar.index);
+                    _outstation->Apply(builder.Build());
+                    panel_slave->UpdateAnalogValueCell(ar.index, v);
+                }
+                for (auto& ci : counter_increment)
+                {
+                    ci.second += rand() % 100;
+                    opendnp3::Flags f;
+                    f.Set(opendnp3::CounterQuality::ONLINE);
+                    builder.Update(opendnp3::Counter(ci.second, f, moa->Now()), ci.first);
+                    _outstation->Apply(builder.Build());
+                    panel_slave->UpdateCounterValueCell(ci.first, ci.second);
+                }
             }
         } });
 }
@@ -243,7 +273,10 @@ void MSlave::StopRandomize()
         work_random = false;
         randomize_thread.join();
     }
-    binary_random.clear();    
+    binary_random.clear();
+    dbinary_random.clear();
+    analog_random.clear();
+    counter_increment.clear();
 }
 
 class MChannelListener final : public opendnp3::IChannelListener, private opendnp3::Uncopyable

@@ -29,7 +29,7 @@ bool MApp::OnInit()
 {
     try
     {
-        setlocale(LC_ALL,"");
+        std::setlocale(LC_NUMERIC, "C");
         frame = new MFrame();
 		frame->SetTitle(GetAppName());
         frame->SetIcon(wxICON(IDI_ICON1));
