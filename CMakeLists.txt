@@ -62,6 +62,7 @@ if (UNIX)
     set(CPACK_DEBIAN_PACKAGE_DEPENDS "libwxgtk3.0-gtk3-0v5")
     install(FILES resources/dnp3outstationsimulator.png DESTINATION share/icons/)
     install(FILES resources/dnp3outstationsimulator.desktop DESTINATION share/applications/)
+    install(FILES ../opendnp3/build/cpp/lib/libopendnp3.so DESTINATION lib)
 endif (UNIX)
 
 include(CPack)

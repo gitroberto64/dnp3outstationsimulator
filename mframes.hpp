@@ -71,7 +71,8 @@ private:
     std::uint16_t last_remote;
     std::vector<wxAuiNotebook*> notebooks_slaves;
     int frame_event_id;
-    wxString current_path; 
+    wxString current_dir;
+    wxString current_filename;
 };
 
 class MPanelSlave : public PanelSlave

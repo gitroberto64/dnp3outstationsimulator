@@ -24,13 +24,13 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 #### opendnp3
 * git clone https://github.com/dnp3/opendnp3 ../opendnp3
 * cd opendnp3
-* cmake -S . -B build
-* cmake --build build
+* cmake -Wno-dev -S . -B build
+* cmake --build build  --config Release
 
 #### dnp3outstationsimpuator
 * cd ../
 * cmake -S . -B build
-* cmake --build build
+* cmake --build build --config Release
 
 ### Build for Linux:
 
@@ -44,14 +44,14 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 * git clone https://github.com/dnp3/opendnp3 ../opendnp3
 * cd opendnp3
 * cmake -S . -B build
-* cmake --build build
+* cmake --build build --config Release
 
 #### dnp3outstationsimpuator
 * cd ../
 * cmake -S . -B build
-* cmake --build build
+* cmake --build build --config Release
 
-### Install:
+### Build the installation package:
 * cd build
 * (Linux) cpack -G DEB -C Release
 * (Windows) cpack.exe -G NSIS64 -C Release

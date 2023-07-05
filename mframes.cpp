@@ -57,12 +57,13 @@ MFrame::MFrame() : MainFrame(NULL, wxID_ANY), mgr(this)
     last_number = 0;
     last_remote = 2;
     frame_event_id = wxNewId();
-    current_path = wxStandardPaths::Get().GetDocumentsDir();
+    current_dir = wxStandardPaths::Get().GetDocumentsDir();
     SetStatusBarPane(-1);    
     ReadProp();
     Center();    
-    if (wxFileName(current_path).HasExt())
-        LoadFromFile(current_path);
+    auto fp = wxFileName(current_dir, current_filename).GetFullPath();
+    if (wxFileName::FileExists(fp))
+        LoadFromFile(fp);
     Connect(frame_event_id, wxCommandEventHandler(MFrame::OnThreadListLog));
 }
 
@@ -296,7 +297,8 @@ void MFrame::ReadProp()
 {
     wxConfig conf(wxTheApp->GetAppName());
     SetSize(conf.Read("width", GetSize().GetWidth()), conf.Read("height", GetSize().GetHeight()));
-    current_path = conf.Read("current_path", current_path);
+    current_dir = conf.Read("current_dir", current_dir);
+    current_filename = conf.Read("current_filename", current_filename);
 }
 
 void MFrame::SaveProp()
@@ -304,7 +306,8 @@ void MFrame::SaveProp()
     wxConfig conf(wxTheApp->GetAppName());
     conf.Write("width", GetSize().GetWidth());
     conf.Write("height", GetSize().GetHeight());
-    conf.Write("current_path", current_path);
+    conf.Write("current_dir", current_dir);
+    conf.Write("current_filename", current_filename);
 }
 
 void MFrame::OnClose(wxCloseEvent &event)
@@ -321,13 +324,13 @@ void MFrame::OnMenuSelectionOpen(wxCommandEvent &event)
 {
     try
     {
-        wxFileDialog fd(this, "Choose file to open", wxEmptyString, wxEmptyString, "XDS file (*.xds)|*.xds", wxFD_OPEN);
-        fd.SetPath(current_path);
+        wxFileDialog fd(this, "Choose file to open", current_dir, current_filename, "XDS file (*.xds)|*.xds", wxFD_OPEN);
         if (fd.ShowModal() == wxID_OK)
         {
-            current_path = fd.GetPath();
+            current_dir = fd.GetDirectory();
+            current_filename = fd.GetFilename();
             DeleteAll();
-            LoadFromFile(current_path);
+            LoadFromFile(fd.GetPath());
         }
     }
     catch (const std::exception &e)
@@ -340,18 +343,26 @@ void MFrame::OnMenuSelectionSave(wxCommandEvent &event)
 {
     try
     {
-        if (!current_path.empty() && wxFileName::FileExists(current_path))
-            SaveToFile(current_path);
+        auto fp = wxFileName(current_dir, current_filename).GetFullPath();
+        if (wxFileName::FileExists(fp))
+            SaveToFile(fp);
         else
         {
-            wxFileDialog fd(this, "Choose file to save", wxEmptyString, wxEmptyString, "XDS file (*.xds)|*.xds", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-            fd.SetPath(current_path);
-            wxFileName fn(current_path);
-            fn.SetExt("xds");
+            wxFileDialog fd(this, "Choose file to save", current_dir, current_filename, "XDS file (*.xds)|*.xds", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
             if (fd.ShowModal() == wxID_OK)
             {
-                current_path = fd.GetPath();
-                SaveToFile(current_path);
+                wxString fn = fd.GetFilename();
+                if (!fn.empty())
+                {
+                    if (fn.find(".xds") == wxString::npos)
+                    {
+                        fn += ".xds";
+                    }
+                    fd.SetFilename(fn);
+                    current_dir = fd.GetDirectory();
+                    current_filename = fn;
+                    SaveToFile(fd.GetPath());
+                }
             }
         }
     }
@@ -365,14 +376,21 @@ void MFrame::OnMenuSelectionSaveAs(wxCommandEvent &event)
 {
     try
     {
-        wxFileDialog fd(this, "Choose file to save", wxEmptyString, wxEmptyString, "XDS file (*.xds)|*.xds", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-        wxFileName fn(current_path);
-        fn.SetExt("xds");
-        fd.SetPath(current_path);
+        wxFileDialog fd(this, "Choose file to save", current_dir, current_filename, "XDS file (*.xds)|*.xds", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
         if (fd.ShowModal() == wxID_OK)
         {
-            current_path = fd.GetPath();
-            SaveToFile(current_path);
+            wxString fn = fd.GetFilename();
+            if(!fn.empty())
+            {
+                if(fn.find(".xds") == wxString::npos)
+                {
+                    fn += ".xds";
+                }
+                fd.SetFilename(fn);
+                current_dir = fd.GetDirectory();
+                current_filename = fn;
+                SaveToFile(fd.GetPath());
+            }
         }
     }
     catch (const std::exception &e)
@@ -579,88 +597,88 @@ const int MPanelSlave::col_increment = MPanelSlave::col_random;
 
 void MPanelSlave::SetDefaultVariations()
 {
-    m_choiceStaticBinary->Append(opendnp3::StaticBinaryVariationSpec::to_human_string((opendnp3::StaticBinaryVariation::Group1Var1)));
-    m_choiceStaticBinary->Append(opendnp3::StaticBinaryVariationSpec::to_human_string((opendnp3::StaticBinaryVariation::Group1Var2)));
+    m_choiceStaticBinary->Append(opendnp3::StaticBinaryVariationSpec::to_string((opendnp3::StaticBinaryVariation::Group1Var1)));
+    m_choiceStaticBinary->Append(opendnp3::StaticBinaryVariationSpec::to_string((opendnp3::StaticBinaryVariation::Group1Var2)));
     m_choiceStaticBinary->Select(1);
 
-    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_human_string((opendnp3::EventBinaryVariation::Group2Var1)));
-    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_human_string((opendnp3::EventBinaryVariation::Group2Var2)));
-    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_human_string((opendnp3::EventBinaryVariation::Group2Var3)));
+    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_string((opendnp3::EventBinaryVariation::Group2Var1)));
+    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_string((opendnp3::EventBinaryVariation::Group2Var2)));
+    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_string((opendnp3::EventBinaryVariation::Group2Var3)));
     m_choiceEventBinary->Select(0);
 
-    m_choiceStaticDBit->Append(opendnp3::StaticDoubleBinaryVariationSpec::to_human_string((opendnp3::StaticDoubleBinaryVariation::Group3Var2)));
+    m_choiceStaticDBit->Append(opendnp3::StaticDoubleBinaryVariationSpec::to_string((opendnp3::StaticDoubleBinaryVariation::Group3Var2)));
     m_choiceStaticDBit->Select(0);
 
-    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_human_string((opendnp3::EventDoubleBinaryVariation::Group4Var1)));
-    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_human_string((opendnp3::EventDoubleBinaryVariation::Group4Var2)));
-    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_human_string((opendnp3::EventDoubleBinaryVariation::Group4Var3)));
+    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_string((opendnp3::EventDoubleBinaryVariation::Group4Var1)));
+    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_string((opendnp3::EventDoubleBinaryVariation::Group4Var2)));
+    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_string((opendnp3::EventDoubleBinaryVariation::Group4Var3)));
     m_choiceEventDBit->Select(0);
 
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_human_string((opendnp3::StaticAnalogVariation::Group30Var1)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_human_string((opendnp3::StaticAnalogVariation::Group30Var2)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_human_string((opendnp3::StaticAnalogVariation::Group30Var3)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_human_string((opendnp3::StaticAnalogVariation::Group30Var4)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_human_string((opendnp3::StaticAnalogVariation::Group30Var5)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_human_string((opendnp3::StaticAnalogVariation::Group30Var6)));
+    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var1)));
+    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var2)));
+    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var3)));
+    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var4)));
+    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var5)));
+    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var6)));
     m_choiceStaticAnalogInput->Select(0);
 
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var1)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var2)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var3)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var4)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var5)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var6)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var7)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_human_string((opendnp3::EventAnalogVariation::Group32Var8)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var1)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var2)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var3)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var4)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var5)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var6)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var7)));
+    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var8)));
     m_choiceEventAnalogInput->Select(0);
 
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_human_string((opendnp3::StaticCounterVariation::Group20Var1)));
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_human_string((opendnp3::StaticCounterVariation::Group20Var2)));
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_human_string((opendnp3::StaticCounterVariation::Group20Var5)));
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_human_string((opendnp3::StaticCounterVariation::Group20Var6)));
+    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var1)));
+    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var2)));
+    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var5)));
+    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var6)));
     m_choiceStaticCounter->Select(0);
 
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_human_string((opendnp3::EventCounterVariation::Group22Var1)));
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_human_string((opendnp3::EventCounterVariation::Group22Var2)));
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_human_string((opendnp3::EventCounterVariation::Group22Var5)));
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_human_string((opendnp3::EventCounterVariation::Group22Var6)));
+    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var1)));
+    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var2)));
+    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var5)));
+    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var6)));
     m_choiceEventCounter->Select(0);
 
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_human_string((opendnp3::StaticFrozenCounterVariation::Group21Var1)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_human_string((opendnp3::StaticFrozenCounterVariation::Group21Var2)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_human_string((opendnp3::StaticFrozenCounterVariation::Group21Var5)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_human_string((opendnp3::StaticFrozenCounterVariation::Group21Var6)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_human_string((opendnp3::StaticFrozenCounterVariation::Group21Var9)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_human_string((opendnp3::StaticFrozenCounterVariation::Group21Var10)));
+    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var1)));
+    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var2)));
+    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var5)));
+    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var6)));
+    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var9)));
+    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var10)));
     m_choiceStaticFCounter->Select(0);
 
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_human_string((opendnp3::EventFrozenCounterVariation::Group23Var1)));
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_human_string((opendnp3::EventFrozenCounterVariation::Group23Var2)));
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_human_string((opendnp3::EventFrozenCounterVariation::Group23Var5)));
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_human_string((opendnp3::EventFrozenCounterVariation::Group23Var6)));
+    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var1)));
+    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var2)));
+    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var5)));
+    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var6)));
     m_choiceEventFCounter->Select(0);
 
-    m_choiceStaticBinaryOutput->Append(opendnp3::StaticBinaryOutputStatusVariationSpec::to_human_string((opendnp3::StaticBinaryOutputStatusVariation::Group10Var2)));
+    m_choiceStaticBinaryOutput->Append(opendnp3::StaticBinaryOutputStatusVariationSpec::to_string((opendnp3::StaticBinaryOutputStatusVariation::Group10Var2)));
     m_choiceStaticBinaryOutput->Select(0);
 
-    m_choiceEventBinaryOutput->Append(opendnp3::EventBinaryOutputStatusVariationSpec::to_human_string((opendnp3::EventBinaryOutputStatusVariation::Group11Var1)));
-    m_choiceEventBinaryOutput->Append(opendnp3::EventBinaryOutputStatusVariationSpec::to_human_string((opendnp3::EventBinaryOutputStatusVariation::Group11Var2)));
+    m_choiceEventBinaryOutput->Append(opendnp3::EventBinaryOutputStatusVariationSpec::to_string((opendnp3::EventBinaryOutputStatusVariation::Group11Var1)));
+    m_choiceEventBinaryOutput->Append(opendnp3::EventBinaryOutputStatusVariationSpec::to_string((opendnp3::EventBinaryOutputStatusVariation::Group11Var2)));
     m_choiceEventBinaryOutput->Select(0);
 
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_human_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var1)));
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_human_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var2)));
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_human_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var3)));
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_human_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var4)));
+    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var1)));
+    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var2)));
+    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var3)));
+    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var4)));
     m_choiceStaticAnalogOutput->Select(0);
 
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var1)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var2)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var3)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var4)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var5)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var6)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var7)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_human_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var8)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var1)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var2)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var3)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var4)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var5)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var6)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var7)));
+    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var8)));
     m_choiceEventAnalogOutput->Select(0);
 }
 
@@ -1036,7 +1054,7 @@ void MPanelSlave::ReadStateFromGui()
         if(state != "OFF")
         {
             const std::string s = state.ToStdString();
-            const std::regex pattern(R"((-?\d+(\.\d+)?)\s*-\s*(-?\d+(\.\d+)?))");
+            const std::regex pattern(R"((-?\d+(\.\d+)?)\s*:\s*(-?\d+(\.\d+)?))");
             std::smatch matches;
             if (std::regex_match(s, matches, pattern)) {
                 const double first = std::stod(matches[1]);
@@ -1667,7 +1685,6 @@ void MPanelSlave::OnGridCellChangeAnalogInput(wxGridEvent &event)
             {
                 wxString state = m_gridAnalogInput->GetCellValue(event.GetRow(), col_value);
                 wxString quality = m_gridAnalogInput->GetCellValue(event.GetRow(), col_flags);
-                wxString random = m_gridAnalogInput->GetCellValue(event.GetRow(), col_random);
                 auto sd = new MAnalogDialog(this, state, quality,
                                             [this, &event](const wxString &val, const wxString &qual)
                                             {
