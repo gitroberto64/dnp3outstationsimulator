@@ -28,6 +28,7 @@ Copyright [2022] [roberto64 (roberto64dnp3oss@outlook.com)]
 #include <wx/filename.h>
 #include <wx/config.h>
 #include <wx/stdpaths.h>
+#include "variations_spec.hpp"
 
 template <typename T>
 std::uint8_t quality_to_uint8(const wxString &s)
