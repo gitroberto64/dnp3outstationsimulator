@@ -598,88 +598,88 @@ const int MPanelSlave::col_increment = MPanelSlave::col_random;
 
 void MPanelSlave::SetDefaultVariations()
 {
-    m_choiceStaticBinary->Append(opendnp3::StaticBinaryVariationSpec::to_string((opendnp3::StaticBinaryVariation::Group1Var1)));
-    m_choiceStaticBinary->Append(opendnp3::StaticBinaryVariationSpec::to_string((opendnp3::StaticBinaryVariation::Group1Var2)));
+    m_choiceStaticBinary->Append(description_and_name(Variations::g1v1));
+    m_choiceStaticBinary->Append(description_and_name(Variations::g1v2));
     m_choiceStaticBinary->Select(1);
 
-    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_string((opendnp3::EventBinaryVariation::Group2Var1)));
-    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_string((opendnp3::EventBinaryVariation::Group2Var2)));
-    m_choiceEventBinary->Append(opendnp3::EventBinaryVariationSpec::to_string((opendnp3::EventBinaryVariation::Group2Var3)));
+    m_choiceEventBinary->Append(description_and_name(Variations::g2v1));
+    m_choiceEventBinary->Append(description_and_name(Variations::g2v2));
+    m_choiceEventBinary->Append(description_and_name(Variations::g2v3));
     m_choiceEventBinary->Select(0);
 
-    m_choiceStaticDBit->Append(opendnp3::StaticDoubleBinaryVariationSpec::to_string((opendnp3::StaticDoubleBinaryVariation::Group3Var2)));
+    m_choiceStaticDBit->Append(description_and_name(Variations::g3v2));
     m_choiceStaticDBit->Select(0);
 
-    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_string((opendnp3::EventDoubleBinaryVariation::Group4Var1)));
-    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_string((opendnp3::EventDoubleBinaryVariation::Group4Var2)));
-    m_choiceEventDBit->Append(opendnp3::EventDoubleBinaryVariationSpec::to_string((opendnp3::EventDoubleBinaryVariation::Group4Var3)));
+    m_choiceEventDBit->Append(description_and_name(Variations::g4v1));
+    m_choiceEventDBit->Append(description_and_name(Variations::g4v2));
+    m_choiceEventDBit->Append(description_and_name(Variations::g4v3));
     m_choiceEventDBit->Select(0);
 
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var1)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var2)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var3)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var4)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var5)));
-    m_choiceStaticAnalogInput->Append(opendnp3::StaticAnalogVariationSpec::to_string((opendnp3::StaticAnalogVariation::Group30Var6)));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v1));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v2));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v3));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v4));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v5));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v6));
     m_choiceStaticAnalogInput->Select(0);
 
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var1)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var2)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var3)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var4)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var5)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var6)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var7)));
-    m_choiceEventAnalogInput->Append(opendnp3::EventAnalogVariationSpec::to_string((opendnp3::EventAnalogVariation::Group32Var8)));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v1));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v2));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v3));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v4));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v5));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v6));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v7));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v8));
     m_choiceEventAnalogInput->Select(0);
 
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var1)));
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var2)));
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var5)));
-    m_choiceStaticCounter->Append(opendnp3::StaticCounterVariationSpec::to_string((opendnp3::StaticCounterVariation::Group20Var6)));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v1));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v2));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v5));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v6));
     m_choiceStaticCounter->Select(0);
 
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var1)));
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var2)));
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var5)));
-    m_choiceEventCounter->Append(opendnp3::EventCounterVariationSpec::to_string((opendnp3::EventCounterVariation::Group22Var6)));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v1));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v2));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v5));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v6));
     m_choiceEventCounter->Select(0);
 
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var1)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var2)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var5)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var6)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var9)));
-    m_choiceStaticFCounter->Append(opendnp3::StaticFrozenCounterVariationSpec::to_string((opendnp3::StaticFrozenCounterVariation::Group21Var10)));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v1));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v2));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v5));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v6));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v9));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v10));
     m_choiceStaticFCounter->Select(0);
 
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var1)));
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var2)));
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var5)));
-    m_choiceEventFCounter->Append(opendnp3::EventFrozenCounterVariationSpec::to_string((opendnp3::EventFrozenCounterVariation::Group23Var6)));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v1));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v2));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v5));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v6));
     m_choiceEventFCounter->Select(0);
 
-    m_choiceStaticBinaryOutput->Append(opendnp3::StaticBinaryOutputStatusVariationSpec::to_string((opendnp3::StaticBinaryOutputStatusVariation::Group10Var2)));
+    m_choiceStaticBinaryOutput->Append(description_and_name(Variations::g10v2));
     m_choiceStaticBinaryOutput->Select(0);
 
-    m_choiceEventBinaryOutput->Append(opendnp3::EventBinaryOutputStatusVariationSpec::to_string((opendnp3::EventBinaryOutputStatusVariation::Group11Var1)));
-    m_choiceEventBinaryOutput->Append(opendnp3::EventBinaryOutputStatusVariationSpec::to_string((opendnp3::EventBinaryOutputStatusVariation::Group11Var2)));
+    m_choiceEventBinaryOutput->Append(description_and_name(Variations::g11v1));
+    m_choiceEventBinaryOutput->Append(description_and_name(Variations::g11v2));
     m_choiceEventBinaryOutput->Select(0);
 
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var1)));
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var2)));
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var3)));
-    m_choiceStaticAnalogOutput->Append(opendnp3::StaticAnalogOutputStatusVariationSpec::to_string((opendnp3::StaticAnalogOutputStatusVariation::Group40Var4)));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v1));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v2));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v3));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v4));
     m_choiceStaticAnalogOutput->Select(0);
 
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var1)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var2)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var3)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var4)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var5)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var6)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var7)));
-    m_choiceEventAnalogOutput->Append(opendnp3::EventAnalogOutputStatusVariationSpec::to_string((opendnp3::EventAnalogOutputStatusVariation::Group42Var8)));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v1));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v2));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v3));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v4));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v5));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v6));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v7));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v8));
     m_choiceEventAnalogOutput->Select(0);
 }
 
