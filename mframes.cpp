@@ -596,90 +596,99 @@ const int MPanelSlave::col_flags = 3;
 const int MPanelSlave::col_random = 4;
 const int MPanelSlave::col_increment = MPanelSlave::col_random;
 
+class VClientData : public wxClientData
+{
+public:
+    VClientData(Variations var) : _var(var) { }
+    Variations get_var() const { return _var; }
+private:
+    Variations _var;
+};
+
 void MPanelSlave::SetDefaultVariations()
 {
-    m_choiceStaticBinary->Append(description_and_name(Variations::g1v1));
-    m_choiceStaticBinary->Append(description_and_name(Variations::g1v2));
+    m_choiceStaticBinary->Append(description_and_name(Variations::g1v1), new VClientData(Variations::g1v1));
+    m_choiceStaticBinary->Append(description_and_name(Variations::g1v2), new VClientData(Variations::g1v2));
     m_choiceStaticBinary->Select(1);
 
-    m_choiceEventBinary->Append(description_and_name(Variations::g2v1));
-    m_choiceEventBinary->Append(description_and_name(Variations::g2v2));
-    m_choiceEventBinary->Append(description_and_name(Variations::g2v3));
+    m_choiceEventBinary->Append(description_and_name(Variations::g2v1), new VClientData(Variations::g2v1));
+    m_choiceEventBinary->Append(description_and_name(Variations::g2v2), new VClientData(Variations::g2v2));
+    m_choiceEventBinary->Append(description_and_name(Variations::g2v3), new VClientData(Variations::g2v3));
     m_choiceEventBinary->Select(0);
 
-    m_choiceStaticDBit->Append(description_and_name(Variations::g3v2));
+    m_choiceStaticDBit->Append(description_and_name(Variations::g3v2), new VClientData(Variations::g3v2));
     m_choiceStaticDBit->Select(0);
 
-    m_choiceEventDBit->Append(description_and_name(Variations::g4v1));
-    m_choiceEventDBit->Append(description_and_name(Variations::g4v2));
-    m_choiceEventDBit->Append(description_and_name(Variations::g4v3));
+    m_choiceEventDBit->Append(description_and_name(Variations::g4v1), new VClientData(Variations::g4v1));
+    m_choiceEventDBit->Append(description_and_name(Variations::g4v2), new VClientData(Variations::g4v2));
+    m_choiceEventDBit->Append(description_and_name(Variations::g4v3), new VClientData(Variations::g4v3));
     m_choiceEventDBit->Select(0);
 
-    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v1));
-    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v2));
-    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v3));
-    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v4));
-    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v5));
-    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v6));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v1), new VClientData(Variations::g30v1));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v2), new VClientData(Variations::g30v2));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v3), new VClientData(Variations::g30v3));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v4), new VClientData(Variations::g30v4));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v5), new VClientData(Variations::g30v5));
+    m_choiceStaticAnalogInput->Append(description_and_name(Variations::g30v6), new VClientData(Variations::g30v6));
     m_choiceStaticAnalogInput->Select(0);
 
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v1));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v2));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v3));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v4));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v5));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v6));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v7));
-    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v8));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v1), new VClientData(Variations::g32v1));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v2), new VClientData(Variations::g32v2));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v3), new VClientData(Variations::g32v3));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v4), new VClientData(Variations::g32v4));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v5), new VClientData(Variations::g32v5));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v6), new VClientData(Variations::g32v6));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v7), new VClientData(Variations::g32v7));
+    m_choiceEventAnalogInput->Append(description_and_name(Variations::g32v8), new VClientData(Variations::g32v8));
     m_choiceEventAnalogInput->Select(0);
 
-    m_choiceStaticCounter->Append(description_and_name(Variations::g20v1));
-    m_choiceStaticCounter->Append(description_and_name(Variations::g20v2));
-    m_choiceStaticCounter->Append(description_and_name(Variations::g20v5));
-    m_choiceStaticCounter->Append(description_and_name(Variations::g20v6));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v1), new VClientData(Variations::g20v1));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v2), new VClientData(Variations::g20v2));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v5), new VClientData(Variations::g20v5));
+    m_choiceStaticCounter->Append(description_and_name(Variations::g20v6), new VClientData(Variations::g20v6));
     m_choiceStaticCounter->Select(0);
 
-    m_choiceEventCounter->Append(description_and_name(Variations::g22v1));
-    m_choiceEventCounter->Append(description_and_name(Variations::g22v2));
-    m_choiceEventCounter->Append(description_and_name(Variations::g22v5));
-    m_choiceEventCounter->Append(description_and_name(Variations::g22v6));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v1), new VClientData(Variations::g22v1));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v2), new VClientData(Variations::g22v2));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v5), new VClientData(Variations::g22v5));
+    m_choiceEventCounter->Append(description_and_name(Variations::g22v6), new VClientData(Variations::g22v6));
     m_choiceEventCounter->Select(0);
 
-    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v1));
-    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v2));
-    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v5));
-    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v6));
-    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v9));
-    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v10));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v1), new VClientData(Variations::g21v1));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v2), new VClientData(Variations::g21v2));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v5), new VClientData(Variations::g21v5));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v6), new VClientData(Variations::g21v6));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v9), new VClientData(Variations::g21v9));
+    m_choiceStaticFCounter->Append(description_and_name(Variations::g21v10), new VClientData(Variations::g21v10));
     m_choiceStaticFCounter->Select(0);
 
-    m_choiceEventFCounter->Append(description_and_name(Variations::g23v1));
-    m_choiceEventFCounter->Append(description_and_name(Variations::g23v2));
-    m_choiceEventFCounter->Append(description_and_name(Variations::g23v5));
-    m_choiceEventFCounter->Append(description_and_name(Variations::g23v6));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v1), new VClientData(Variations::g23v1));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v2), new VClientData(Variations::g23v2));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v5), new VClientData(Variations::g23v5));
+    m_choiceEventFCounter->Append(description_and_name(Variations::g23v6), new VClientData(Variations::g23v6));
     m_choiceEventFCounter->Select(0);
 
-    m_choiceStaticBinaryOutput->Append(description_and_name(Variations::g10v2));
+    m_choiceStaticBinaryOutput->Append(description_and_name(Variations::g10v2), new VClientData(Variations::g10v2));
     m_choiceStaticBinaryOutput->Select(0);
 
-    m_choiceEventBinaryOutput->Append(description_and_name(Variations::g11v1));
-    m_choiceEventBinaryOutput->Append(description_and_name(Variations::g11v2));
+    m_choiceEventBinaryOutput->Append(description_and_name(Variations::g11v1), new VClientData(Variations::g11v1));
+    m_choiceEventBinaryOutput->Append(description_and_name(Variations::g11v2), new VClientData(Variations::g11v2));
     m_choiceEventBinaryOutput->Select(0);
 
-    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v1));
-    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v2));
-    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v3));
-    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v4));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v1), new VClientData(Variations::g40v1));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v2), new VClientData(Variations::g40v2));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v3), new VClientData(Variations::g40v3));
+    m_choiceStaticAnalogOutput->Append(description_and_name(Variations::g40v4), new VClientData(Variations::g40v4));
     m_choiceStaticAnalogOutput->Select(0);
 
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v1));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v2));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v3));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v4));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v5));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v6));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v7));
-    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v8));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v1), new VClientData(Variations::g42v1));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v2), new VClientData(Variations::g42v2));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v3), new VClientData(Variations::g42v3));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v4), new VClientData(Variations::g42v4));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v5), new VClientData(Variations::g42v5));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v6), new VClientData(Variations::g42v6));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v7), new VClientData(Variations::g42v7));
+    m_choiceEventAnalogOutput->Append(description_and_name(Variations::g42v8), new VClientData(Variations::g42v8));
     m_choiceEventAnalogOutput->Select(0);
 }
 
@@ -845,6 +854,13 @@ void MPanelSlave::SaveToXML(wxXmlNode *ele)
     }
 }
 
+const std::string& var_name_from_choice(const wxChoice* choice)
+{
+    auto aa = choice->GetSelection();
+    const VClientData* mcd = static_cast<const VClientData*>(choice->GetClientObject(aa));
+    return variations_spec.at(mcd->get_var()).name;
+}
+
 void MPanelSlave::ReadSlaveConfig()
 {
     stackConfig.link.LocalAddr = std::stoi(m_textCtrlSlaveAddr->GetValue().ToStdString());
@@ -855,56 +871,57 @@ void MPanelSlave::ReadSlaveConfig()
     {
         device.binary_input[i] = {};
         device.binary_input[i].clazz = opendnp3::PointClass::Class1;
-        device.binary_input[i].svariation = opendnp3::StaticBinaryVariationSpec::from_string(m_choiceStaticBinary->GetStringSelection().ToStdString());
-        device.binary_input[i].evariation = opendnp3::EventBinaryVariationSpec::from_string(m_choiceEventBinary->GetStringSelection().ToStdString());
+
+        device.binary_input[i].svariation = opendnp3::StaticBinaryVariationSpec::from_string(var_name_from_choice(m_choiceStaticBinary));
+        device.binary_input[i].evariation = opendnp3::EventBinaryVariationSpec::from_string(var_name_from_choice(m_choiceEventBinary));
     }
     for (int i = 0; i < m_spinCtrlDBit->GetValue(); i++)
     {
         device.double_binary[i] = {};
 
         device.double_binary[i].clazz = opendnp3::PointClass::Class1;
-        device.double_binary[i].svariation = opendnp3::StaticDoubleBinaryVariationSpec::from_string(m_choiceStaticDBit->GetStringSelection().ToStdString());
-        device.double_binary[i].evariation = opendnp3::EventDoubleBinaryVariationSpec::from_string(m_choiceEventDBit->GetStringSelection().ToStdString());
+        device.double_binary[i].svariation = opendnp3::StaticDoubleBinaryVariationSpec::from_string(var_name_from_choice(m_choiceStaticDBit));
+        device.double_binary[i].evariation = opendnp3::EventDoubleBinaryVariationSpec::from_string(var_name_from_choice(m_choiceEventDBit));
     }
     for (int i = 0; i < m_spinCtrlAnalogInput->GetValue(); i++)
     {
         device.analog_input[i] = {};
 
         device.analog_input[i].clazz = opendnp3::PointClass::Class1;
-        device.analog_input[i].svariation = opendnp3::StaticAnalogVariationSpec::from_string(m_choiceStaticAnalogInput->GetStringSelection().ToStdString());
-        device.analog_input[i].evariation = opendnp3::EventAnalogVariationSpec::from_string(m_choiceEventAnalogInput->GetStringSelection().ToStdString());
+        device.analog_input[i].svariation = opendnp3::StaticAnalogVariationSpec::from_string(var_name_from_choice(m_choiceStaticAnalogInput));
+        device.analog_input[i].evariation = opendnp3::EventAnalogVariationSpec::from_string(var_name_from_choice(m_choiceEventAnalogInput));
     }
     for (int i = 0; i < m_spinCtrlCounter->GetValue(); i++)
     {
         device.counter[i] = {};
 
         device.counter[i].clazz = opendnp3::PointClass::Class1;
-        device.counter[i].svariation = opendnp3::StaticCounterVariationSpec::from_string(m_choiceStaticCounter->GetStringSelection().ToStdString());
-        device.counter[i].evariation = opendnp3::EventCounterVariationSpec::from_string(m_choiceEventCounter->GetStringSelection().ToStdString());
+        device.counter[i].svariation = opendnp3::StaticCounterVariationSpec::from_string(var_name_from_choice(m_choiceStaticCounter));
+        device.counter[i].evariation = opendnp3::EventCounterVariationSpec::from_string(var_name_from_choice(m_choiceEventCounter));
     }
     for (int i = 0; i < m_spinCtrlFCounter->GetValue(); i++)
     {
         device.counter[i] = {};
 
         device.frozen_counter[i].clazz = opendnp3::PointClass::Class1;
-        device.frozen_counter[i].svariation = opendnp3::StaticFrozenCounterVariationSpec::from_string(m_choiceStaticFCounter->GetStringSelection().ToStdString());
-        device.frozen_counter[i].evariation = opendnp3::EventFrozenCounterVariationSpec::from_string(m_choiceEventFCounter->GetStringSelection().ToStdString());
+        device.frozen_counter[i].svariation = opendnp3::StaticFrozenCounterVariationSpec::from_string(var_name_from_choice(m_choiceStaticFCounter));
+        device.frozen_counter[i].evariation = opendnp3::EventFrozenCounterVariationSpec::from_string(var_name_from_choice(m_choiceEventFCounter));
     }
     for (int i = 0; i < m_spinCtrlBinaryOutput->GetValue(); i++)
     {
         device.counter[i] = {};
 
         device.binary_output_status[i].clazz = opendnp3::PointClass::Class1;
-        device.binary_output_status[i].svariation = opendnp3::StaticBinaryOutputStatusVariationSpec::from_string(m_choiceStaticBinaryOutput->GetStringSelection().ToStdString());
-        device.binary_output_status[i].evariation = opendnp3::EventBinaryOutputStatusVariationSpec::from_string(m_choiceEventBinaryOutput->GetStringSelection().ToStdString());
+        device.binary_output_status[i].svariation = opendnp3::StaticBinaryOutputStatusVariationSpec::from_string(var_name_from_choice(m_choiceStaticBinaryOutput));
+        device.binary_output_status[i].evariation = opendnp3::EventBinaryOutputStatusVariationSpec::from_string(var_name_from_choice(m_choiceEventBinaryOutput));
     }
     for (int i = 0; i < m_spinCtrlAnalogOutput->GetValue(); i++)
     {
         device.counter[i] = {};
 
         device.analog_output_status[i].clazz = opendnp3::PointClass::Class1;
-        device.analog_output_status[i].svariation = opendnp3::StaticAnalogOutputStatusVariationSpec::from_string(m_choiceStaticAnalogOutput->GetStringSelection().ToStdString());
-        device.analog_output_status[i].evariation = opendnp3::EventAnalogOutputStatusVariationSpec::from_string(m_choiceEventAnalogOutput->GetStringSelection().ToStdString());
+        device.analog_output_status[i].svariation = opendnp3::StaticAnalogOutputStatusVariationSpec::from_string(var_name_from_choice(m_choiceStaticAnalogOutput));
+        device.analog_output_status[i].evariation = opendnp3::EventAnalogOutputStatusVariationSpec::from_string(var_name_from_choice(m_choiceEventAnalogOutput));
     }
 
     stackConfig.database = device;
