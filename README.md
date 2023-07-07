@@ -19,6 +19,9 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 
 #### wxWidgets
 * https://github.com/wxWidgets/wxWidgets/releases/tag/v3.0.5
+	(wxMSW-3.0.5_vc142_x64_ReleaseDLL.7z,
+	 wxMSW-3.0.5_vc142_x64_Dev.7z,
+	 wxWidgets-3.0.5-headers.7z)
 * unpack to ../wx
 
 #### opendnp3
