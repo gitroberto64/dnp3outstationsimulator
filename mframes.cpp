@@ -1874,7 +1874,7 @@ void MPanelSlave::OnPanelEvent(wxCommandEvent &e)
     else
     {
         Cell* cell = static_cast<Cell*>(e.GetClientData());
-        cell->grid->SetCellValue(cell->value, cell->row, cell->col);
+        cell->grid->SetCellValue(cell->row, cell->col, cell->value);
         delete cell;
     }
 }

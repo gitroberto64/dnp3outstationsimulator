@@ -3,10 +3,9 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 
 ### Requirements:
 * opendnp3: https://github.com/dnp3/opendnp3
-* wxwidgets 3.0.5: https://wxwidgets.org
+* wxwidgets 3.2.x: https://wxwidgets.org
 * cmake: https://cmake.org/
 ##### For Windows:
-* Visual Studio Code
 * MSBuild https://visualstudio.microsoft.com/pl/downloads/
 * NSIS:  https://nsis.sourceforge.io/Main_Page
 ##### For Linux:
@@ -18,15 +17,15 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 * cd dnp3outstationsimulator
 
 #### wxWidgets
-* https://github.com/wxWidgets/wxWidgets/releases/tag/v3.0.5
-	(wxMSW-3.0.5_vc142_x64_ReleaseDLL.7z,
-	 wxMSW-3.0.5_vc142_x64_Dev.7z,
-	 wxWidgets-3.0.5-headers.7z)
+* https://github.com/wxWidgets/wxWidgets/releases/tag/v3.2.6
+	(wxMSW-3.2.6_vc14x_x64_ReleaseDLL.7z,
+	 wxMSW-3.2.6_vc14x_x64_Dev.7z,
+	 wxWidgets-3.2.6-headers.7z)
 * unpack to ../wx
 
 #### opendnp3
 * git clone https://github.com/dnp3/opendnp3 ../opendnp3
-* cd opendnp3
+* cd ../opendnp3
 * cmake -Wno-dev -S . -B build
 * cmake --build build  --config Release
 
@@ -41,12 +40,12 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 * cd dnp3outstationsimulator
 
 #### wxWidgets
-* apt install libwxgtk3.0-gtk3-dev
+* apt install libwxgtk3.2-dev nsis
 
 #### opendnp3
 * git clone https://github.com/dnp3/opendnp3 ../opendnp3
-* cd opendnp3
-* cmake -S . -B build
+* cd ../opendnp3
+* cmake -Wno-dev -S . -B build
 * cmake --build build --config Release
 
 #### dnp3outstationsimpuator

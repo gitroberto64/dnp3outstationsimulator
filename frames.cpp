@@ -1,5 +1,5 @@
 ﻿///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b)
+// C++ code generated with wxFormBuilder (version 4.2.1-0-g80c4cb6-dirty)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -726,7 +726,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	bSizer25->Add( m_spinCtrlRandom, 0, wxALL, 5 );
 
 
-	bSizer9->Add( bSizer25, 1, wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	bSizer9->Add( bSizer25, 1, wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	bSizer6->Add( bSizer9, 0, wxEXPAND, 0 );
