@@ -235,25 +235,25 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	sbSizer6 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow2, wxID_ANY, wxT("Group") ), wxVERTICAL );
 
 	m_textCtrl25 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Binary Input:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl25, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl25, 1, wxALL|wxEXPAND, 5 );
 
 	m_textCtrl26 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Double Binary Input:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl26, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl26, 1, wxALL|wxEXPAND, 5 );
 
 	m_textCtrl27 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Analog Input:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl27, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl27, 1, wxALL|wxEXPAND, 5 );
 
 	m_textCtrl28 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Counter:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl28, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl28, 1, wxALL|wxEXPAND, 5 );
 
 	m_textCtrl29 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Frozen Counter:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl29, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl29, 1, wxALL|wxEXPAND, 5 );
 
 	m_textCtrl30 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Binary Output:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl30, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl30, 1, wxALL|wxEXPAND, 5 );
 
 	m_textCtrl31 = new wxTextCtrl( sbSizer6->GetStaticBox(), wxID_ANY, wxT("Analog Output:"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-	sbSizer6->Add( m_textCtrl31, 0, wxALL|wxEXPAND, 5 );
+	sbSizer6->Add( m_textCtrl31, 1, wxALL|wxEXPAND, 5 );
 
 
 	bSizer27->Add( sbSizer6, 1, wxEXPAND, 5 );
@@ -262,25 +262,25 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	sbSizer10 = new wxStaticBoxSizer( new wxStaticBox( m_scrolledWindow2, wxID_ANY, wxT("Count") ), wxVERTICAL );
 
 	m_spinCtrlBinaryInput = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlBinaryInput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlBinaryInput, 1, wxALL|wxEXPAND, 5 );
 
 	m_spinCtrlDBit = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlDBit, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlDBit, 1, wxALL|wxEXPAND, 5 );
 
 	m_spinCtrlAnalogInput = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlAnalogInput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlAnalogInput, 1, wxALL|wxEXPAND, 5 );
 
 	m_spinCtrlCounter = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlCounter, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlCounter, 1, wxALL|wxEXPAND, 5 );
 
 	m_spinCtrlFCounter = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlFCounter, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlFCounter, 1, wxALL|wxEXPAND, 5 );
 
 	m_spinCtrlBinaryOutput = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlBinaryOutput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlBinaryOutput, 1, wxALL|wxEXPAND, 5 );
 
 	m_spinCtrlAnalogOutput = new wxSpinCtrl( sbSizer10->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 9999, 0 );
-	sbSizer10->Add( m_spinCtrlAnalogOutput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer10->Add( m_spinCtrlAnalogOutput, 1, wxALL|wxEXPAND, 5 );
 
 
 	bSizer27->Add( sbSizer10, 0, wxEXPAND, 5 );
@@ -291,37 +291,37 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	wxArrayString m_choiceStaticBinaryChoices;
 	m_choiceStaticBinary = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticBinaryChoices, 0 );
 	m_choiceStaticBinary->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticBinary, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticBinary, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceStaticDBitChoices;
 	m_choiceStaticDBit = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticDBitChoices, 0 );
 	m_choiceStaticDBit->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticDBit, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticDBit, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceStaticAnalogInputChoices;
 	m_choiceStaticAnalogInput = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticAnalogInputChoices, 0 );
 	m_choiceStaticAnalogInput->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticAnalogInput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticAnalogInput, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceStaticCounterChoices;
 	m_choiceStaticCounter = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticCounterChoices, 0 );
 	m_choiceStaticCounter->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticCounter, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticCounter, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceStaticFCounterChoices;
 	m_choiceStaticFCounter = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticFCounterChoices, 0 );
 	m_choiceStaticFCounter->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticFCounter, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticFCounter, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceStaticBinaryOutputChoices;
 	m_choiceStaticBinaryOutput = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticBinaryOutputChoices, 0 );
 	m_choiceStaticBinaryOutput->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticBinaryOutput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticBinaryOutput, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceStaticAnalogOutputChoices;
 	m_choiceStaticAnalogOutput = new wxChoice( sbSizer11->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceStaticAnalogOutputChoices, 0 );
 	m_choiceStaticAnalogOutput->SetSelection( 0 );
-	sbSizer11->Add( m_choiceStaticAnalogOutput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer11->Add( m_choiceStaticAnalogOutput, 1, wxALL|wxEXPAND, 5 );
 
 
 	bSizer27->Add( sbSizer11, 1, wxEXPAND, 5 );
@@ -332,37 +332,37 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	wxArrayString m_choiceEventBinaryChoices;
 	m_choiceEventBinary = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventBinaryChoices, 0 );
 	m_choiceEventBinary->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventBinary, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventBinary, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceEventDBitChoices;
 	m_choiceEventDBit = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventDBitChoices, 0 );
 	m_choiceEventDBit->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventDBit, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventDBit, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceEventAnalogInputChoices;
 	m_choiceEventAnalogInput = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventAnalogInputChoices, 0 );
 	m_choiceEventAnalogInput->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventAnalogInput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventAnalogInput, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceEventCounterChoices;
 	m_choiceEventCounter = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventCounterChoices, 0 );
 	m_choiceEventCounter->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventCounter, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventCounter, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceEventFCounterChoices;
 	m_choiceEventFCounter = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventFCounterChoices, 0 );
 	m_choiceEventFCounter->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventFCounter, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventFCounter, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceEventBinaryOutputChoices;
 	m_choiceEventBinaryOutput = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventBinaryOutputChoices, 0 );
 	m_choiceEventBinaryOutput->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventBinaryOutput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventBinaryOutput, 1, wxALL|wxEXPAND, 5 );
 
 	wxArrayString m_choiceEventAnalogOutputChoices;
 	m_choiceEventAnalogOutput = new wxChoice( sbSizer12->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, m_choiceEventAnalogOutputChoices, 0 );
 	m_choiceEventAnalogOutput->SetSelection( 0 );
-	sbSizer12->Add( m_choiceEventAnalogOutput, 0, wxALL|wxEXPAND, 5 );
+	sbSizer12->Add( m_choiceEventAnalogOutput, 1, wxALL|wxEXPAND, 5 );
 
 
 	bSizer27->Add( sbSizer12, 1, wxEXPAND, 5 );

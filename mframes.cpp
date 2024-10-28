@@ -107,8 +107,8 @@ void MFrame::LoadFromFile(const wxString &name)
                 while (slave)
                 {
                     MPanelSlave *ps = new MPanelSlave(notebooks_slaves.back());
-                    ps->LoadFromXML(slave);
                     notebooks_slaves.back()->AddPage(ps, ps->GetSlaveName());
+                    ps->LoadFromXML(slave);
                     last_remote++;
                     slave = slave->GetNext();
                 }
