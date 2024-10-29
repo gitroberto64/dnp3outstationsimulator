@@ -90,7 +90,7 @@ class MainFrame : public wxFrame
 
 		void m_splitter1OnIdle( wxIdleEvent& )
 		{
-			m_splitter1->SetSashPosition( 0 );
+			m_splitter1->SetSashPosition( -180 );
 			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::m_splitter1OnIdle ), NULL, this );
 		}
 
@@ -104,6 +104,8 @@ class PanelSlave : public wxPanel
 	private:
 
 	protected:
+		wxSplitterWindow* m_splitter2;
+		wxPanel* m_panel15;
 		wxListbook* m_listbookObjects;
 		wxPanel* m_panelConfig;
 		wxScrolledWindow* m_scrolledWindow2;
@@ -153,6 +155,7 @@ class PanelSlave : public wxPanel
 		wxGrid* m_gridBinaryOut;
 		wxPanel* m_panelAnalogOut;
 		wxGrid* m_gridAnalogOut;
+		wxPanel* m_panel14;
 		wxListBox* m_listBoxSlave;
 		wxButton* m_buttonSlaveStart;
 		wxButton* m_buttonSlaveRestart;
@@ -205,6 +208,12 @@ class PanelSlave : public wxPanel
 		PanelSlave( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 972,662 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 		~PanelSlave();
+
+		void m_splitter2OnIdle( wxIdleEvent& )
+		{
+			m_splitter2->SetSashPosition( -100 );
+			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( PanelSlave::m_splitter2OnIdle ), NULL, this );
+		}
 
 };
 

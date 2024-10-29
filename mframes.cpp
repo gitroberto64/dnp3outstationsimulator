@@ -300,7 +300,6 @@ void MFrame::ReadProp()
     SetSize(conf.Read("width", GetSize().GetWidth()), conf.Read("height", GetSize().GetHeight()));
     current_dir = conf.Read("current_dir", current_dir);
     current_filename = conf.Read("current_filename", current_filename);
-    m_splitter1->SetSashPosition(conf.Read("splitter_pos", long(0)), true);
 }
 
 void MFrame::SaveProp()
@@ -310,7 +309,6 @@ void MFrame::SaveProp()
     conf.Write("height", GetSize().GetHeight());
     conf.Write("current_dir", current_dir);
     conf.Write("current_filename", current_filename);
-    conf.Write("splitter_pos", m_splitter1->GetSashPosition());
 }
 
 void MFrame::OnClose(wxCloseEvent &event)
@@ -538,7 +536,7 @@ void MFrame::OnMenuSelectionAbout(wxCommandEvent &event)
     wxAboutDialogInfo info;
     info.SetName(wxTheApp->GetAppName());
     info.AddDeveloper("roberto64");
-    info.SetWebSite("https://bitbucket.org/roberto64/dnp3outstationsimulator");
+    info.SetWebSite("https://github.com/gitroberto64/dnp3outstationsimulator");
     info.SetVersion(VERSION);
     info.SetLicense("https://apache.org/licenses/LICENSE-2.0");
     wxAboutBox(info);

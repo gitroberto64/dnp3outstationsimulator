@@ -95,7 +95,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
-	m_splitter1->SetSashGravity( 0 );
+	m_splitter1->SetSashGravity( 0.5 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::m_splitter1OnIdle ), NULL, this );
 
 	m_panel14 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -131,7 +131,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panel15->SetSizer( sbSizer1 );
 	m_panel15->Layout();
 	sbSizer1->Fit( m_panel15 );
-	m_splitter1->SplitHorizontally( m_panel14, m_panel15, 0 );
+	m_splitter1->SplitHorizontally( m_panel14, m_panel15, -180 );
 	bSizer14->Add( m_splitter1, 1, wxEXPAND, 5 );
 
 
@@ -173,7 +173,15 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 
-	m_listbookObjects = new wxListbook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_DEFAULT );
+	m_splitter2 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
+	m_splitter2->SetSashGravity( 0.5 );
+	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( PanelSlave::m_splitter2OnIdle ), NULL, this );
+
+	m_panel15 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer26;
+	bSizer26 = new wxBoxSizer( wxVERTICAL );
+
+	m_listbookObjects = new wxListbook( m_panel15, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_DEFAULT );
 	m_panelConfig = new wxPanel( m_listbookObjects, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer4;
 	bSizer4 = new wxBoxSizer( wxVERTICAL );
@@ -697,10 +705,25 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_listbookObjectsListView->SetWindowStyleFlag( m_listbookObjectsFlags );
 	#endif
 
-	bSizer6->Add( m_listbookObjects, 1, wxEXPAND | wxALL, 1 );
+	bSizer26->Add( m_listbookObjects, 1, wxEXPAND | wxALL, 1 );
 
-	m_listBoxSlave = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
-	bSizer6->Add( m_listBoxSlave, 0, wxALL|wxEXPAND, 1 );
+
+	m_panel15->SetSizer( bSizer26 );
+	m_panel15->Layout();
+	bSizer26->Fit( m_panel15 );
+	m_panel14 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer271;
+	bSizer271 = new wxBoxSizer( wxVERTICAL );
+
+	m_listBoxSlave = new wxListBox( m_panel14, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
+	bSizer271->Add( m_listBoxSlave, 1, wxALL|wxEXPAND, 1 );
+
+
+	m_panel14->SetSizer( bSizer271 );
+	m_panel14->Layout();
+	bSizer271->Fit( m_panel14 );
+	m_splitter2->SplitHorizontally( m_panel15, m_panel14, -100 );
+	bSizer6->Add( m_splitter2, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxHORIZONTAL );
@@ -730,7 +753,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	bSizer9->Add( bSizer25, 1, wxALIGN_CENTER_VERTICAL, 5 );
 
 
-	bSizer6->Add( bSizer9, 0, wxEXPAND, 0 );
+	bSizer6->Add( bSizer9, 0, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer6 );

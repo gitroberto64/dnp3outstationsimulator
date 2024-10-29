@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-project(DNP3OutstationSimulator VERSION 1.2.0)
+project(DNP3OutstationSimulator VERSION 1.2.1)
 
 if (UNIX)
     add_compile_options(-Wall -std=c++17)
