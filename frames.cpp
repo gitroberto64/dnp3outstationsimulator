@@ -94,15 +94,16 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer14;
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 
-	m_panelMain = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer( wxVERTICAL );
+	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
+	m_splitter1->SetSashGravity( 0 );
+	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::m_splitter1OnIdle ), NULL, this );
 
+	m_panel14 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxHORIZONTAL );
 
 	wxStaticBoxSizer* sbSizer5;
-	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, wxT("Channels") ), wxVERTICAL );
+	sbSizer5 = new wxStaticBoxSizer( new wxStaticBox( m_panel14, wxID_ANY, wxT("Channels") ), wxVERTICAL );
 
 	m_listBoxChannels = new wxListBox( sbSizer5->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
 	sbSizer5->Add( m_listBoxChannels, 1, wxALL|wxEXPAND, 0 );
@@ -110,28 +111,28 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	bSizer3->Add( sbSizer5, 1, wxEXPAND, 5 );
 
-	sbSizerNotebookSlaves = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, wxT("Slaves") ), wxVERTICAL );
+	sbSizerNotebookSlaves = new wxStaticBoxSizer( new wxStaticBox( m_panel14, wxID_ANY, wxT("Slaves") ), wxVERTICAL );
 
 
-	bSizer3->Add( sbSizerNotebookSlaves, 4, wxEXPAND, 0 );
+	bSizer3->Add( sbSizerNotebookSlaves, 3, wxEXPAND, 0 );
 
 
-	bSizer2->Add( bSizer3, 3, wxEXPAND, 0 );
-
+	m_panel14->SetSizer( bSizer3 );
+	m_panel14->Layout();
+	bSizer3->Fit( m_panel14 );
+	m_panel15 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_panelMain, wxID_ANY, wxT("Log") ), wxVERTICAL );
+	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( m_panel15, wxID_ANY, wxT("Log") ), wxVERTICAL );
 
 	m_listBoxLog = new wxListBox( sbSizer1->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
 	sbSizer1->Add( m_listBoxLog, 1, wxALL|wxEXPAND, 0 );
 
 
-	bSizer2->Add( sbSizer1, 1, wxEXPAND, 0 );
-
-
-	m_panelMain->SetSizer( bSizer2 );
-	m_panelMain->Layout();
-	bSizer2->Fit( m_panelMain );
-	bSizer14->Add( m_panelMain, 1, wxEXPAND | wxALL, 0 );
+	m_panel15->SetSizer( sbSizer1 );
+	m_panel15->Layout();
+	sbSizer1->Fit( m_panel15 );
+	m_splitter1->SplitHorizontally( m_panel14, m_panel15, 0 );
+	bSizer14->Add( m_splitter1, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer14 );
@@ -696,10 +697,10 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	m_listbookObjectsListView->SetWindowStyleFlag( m_listbookObjectsFlags );
 	#endif
 
-	bSizer6->Add( m_listbookObjects, 4, wxEXPAND | wxALL, 1 );
+	bSizer6->Add( m_listbookObjects, 1, wxEXPAND | wxALL, 1 );
 
 	m_listBoxSlave = new wxListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
-	bSizer6->Add( m_listBoxSlave, 1, wxALL|wxEXPAND, 1 );
+	bSizer6->Add( m_listBoxSlave, 0, wxALL|wxEXPAND, 1 );
 
 	wxBoxSizer* bSizer9;
 	bSizer9 = new wxBoxSizer( wxHORIZONTAL );

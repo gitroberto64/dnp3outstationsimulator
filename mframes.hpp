@@ -78,7 +78,7 @@ private:
 class MPanelSlave : public PanelSlave
 {
 public:
-    MPanelSlave(wxWindow* parent);
+    MPanelSlave(wxWindow* parent, MFrame* mframe);
     ~MPanelSlave();
 	void SetDefaultVariations();
     void LoadFromXML(const wxXmlNode* ele);
@@ -105,6 +105,7 @@ private:
         int col;
         wxString value;
     };
+    MFrame* m_frame;
     opendnp3::OutstationStackConfig stackConfig;
     MSlave* m_slave;
     std::string _name;

@@ -59,9 +59,9 @@ MFrame::MFrame() : MainFrame(NULL, wxID_ANY), mgr(this)
     last_remote = 2;
     frame_event_id = wxNewId();
     current_dir = wxStandardPaths::Get().GetDocumentsDir();
-    SetStatusBarPane(-1);    
-    ReadProp();
     Center();    
+    ReadProp();
+    SetStatusBarPane(-1);
     auto fp = wxFileName(current_dir, current_filename).GetFullPath();
     if (wxFileName::FileExists(fp))
         LoadFromFile(fp);
@@ -106,7 +106,7 @@ void MFrame::LoadFromFile(const wxString &name)
                 const wxXmlNode *slave = ch->GetChildren();
                 while (slave)
                 {
-                    MPanelSlave *ps = new MPanelSlave(notebooks_slaves.back());
+                    MPanelSlave *ps = new MPanelSlave(notebooks_slaves.back(), this);
                     notebooks_slaves.back()->AddPage(ps, ps->GetSlaveName());
                     ps->LoadFromXML(slave);
                     last_remote++;
@@ -154,7 +154,7 @@ void MFrame::AddTCPServer(const std::string &name, const std::string &addr, std:
     m_listBoxChannels->Freeze();
     m_listBoxChannels->Append(wxString((name + ':' + addr + ':' + std::to_string(port)).c_str(), wxConvLocal), new TCPServerClientChannel(ch, name, addr, port));
     m_listBoxChannels->Thaw();
-    notebooks_slaves.push_back(new wxAuiNotebook(m_panelMain));
+    notebooks_slaves.push_back(new wxAuiNotebook(m_panel14));
     notebooks_slaves.back()->Hide();
     sbSizerNotebookSlaves->Add(notebooks_slaves.back(), 1, wxALL | wxEXPAND, 0);
     last_channel++;
@@ -190,7 +190,7 @@ void MFrame::AddSerial(const std::string &name, const opendnp3::SerialSettings &
     m_listBoxChannels->Freeze();
     m_listBoxChannels->Append(wxString(par), new SerialClientChannel(ch, name, settings));
     m_listBoxChannels->Thaw();
-    notebooks_slaves.push_back(new wxAuiNotebook(m_panelMain));
+    notebooks_slaves.push_back(new wxAuiNotebook(this));
     notebooks_slaves.back()->Hide();
     sbSizerNotebookSlaves->Add(notebooks_slaves.back(), 1, wxALL | wxEXPAND, 0);
     last_channel++;
@@ -300,6 +300,7 @@ void MFrame::ReadProp()
     SetSize(conf.Read("width", GetSize().GetWidth()), conf.Read("height", GetSize().GetHeight()));
     current_dir = conf.Read("current_dir", current_dir);
     current_filename = conf.Read("current_filename", current_filename);
+    m_splitter1->SetSashPosition(conf.Read("splitter_pos", long(0)), true);
 }
 
 void MFrame::SaveProp()
@@ -309,6 +310,7 @@ void MFrame::SaveProp()
     conf.Write("height", GetSize().GetHeight());
     conf.Write("current_dir", current_dir);
     conf.Write("current_filename", current_filename);
+    conf.Write("splitter_pos", m_splitter1->GetSashPosition());
 }
 
 void MFrame::OnClose(wxCloseEvent &event)
@@ -475,7 +477,7 @@ void MFrame::OnMenuSelectionSlaveAdd(wxCommandEvent &event)
         int sel = m_listBoxChannels->GetSelection();
         if (sel != -1)
         {
-            MPanelSlave *ps = new MPanelSlave(notebooks_slaves[sel]);
+            MPanelSlave *ps = new MPanelSlave(notebooks_slaves[sel], this);
             ps->m_textCtrlSlaveName->SetValue(wxString(name));
             ps->m_textCtrlSlaveAddr->SetValue(wxString::Format("%u", 1));
             ps->m_textCtrlMasterAddr->SetValue(wxString::Format("%u", last_remote));
@@ -574,7 +576,7 @@ void MFrame::OnThreadListLog(wxCommandEvent &e)
     }
 }
 
-MPanelSlave::MPanelSlave(wxWindow *parent) : PanelSlave(parent)
+MPanelSlave::MPanelSlave(wxWindow *parent, MFrame* mframe) : PanelSlave(parent), m_frame(mframe)
 {
     wxGridCellBoolEditor::UseStringValues("ON", "OFF");
     m_slave = NULL;
@@ -1120,7 +1122,7 @@ void MPanelSlave::SlaveStart()
 {
     if (m_slave == NULL)
     {
-        MFrame *mf = dynamic_cast<MFrame *>(GetParent()->GetGrandParent());
+        MFrame *mf = m_frame;
         int sel = mf->m_listBoxChannels->GetSelection();
         if (sel != -1)
         {

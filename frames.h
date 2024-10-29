@@ -22,6 +22,7 @@
 #include <wx/sizer.h>
 #include <wx/statbox.h>
 #include <wx/panel.h>
+#include <wx/splitter.h>
 #include <wx/statusbr.h>
 #include <wx/frame.h>
 #include <wx/stattext.h>
@@ -54,9 +55,11 @@ class MainFrame : public wxFrame
 		wxMenu* m_menuSlaves;
 		wxMenu* m_menuPreference;
 		wxMenu* m_menuHelp;
-		wxPanel* m_panelMain;
+		wxSplitterWindow* m_splitter1;
+		wxPanel* m_panel14;
 		wxListBox* m_listBoxChannels;
 		wxStaticBoxSizer* sbSizerNotebookSlaves;
+		wxPanel* m_panel15;
 		wxListBox* m_listBoxLog;
 		wxStatusBar* m_statusBar1;
 
@@ -84,6 +87,12 @@ class MainFrame : public wxFrame
 		MainFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~MainFrame();
+
+		void m_splitter1OnIdle( wxIdleEvent& )
+		{
+			m_splitter1->SetSashPosition( 0 );
+			m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::m_splitter1OnIdle ), NULL, this );
+		}
 
 };
 
