@@ -95,7 +95,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	bSizer14 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
-	m_splitter1->SetSashGravity( 0.5 );
+	m_splitter1->SetSashGravity( 0.8 );
 	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::m_splitter1OnIdle ), NULL, this );
 
 	m_panel14 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -174,7 +174,7 @@ PanelSlave::PanelSlave( wxWindow* parent, wxWindowID id, const wxPoint& pos, con
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitter2 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D );
-	m_splitter2->SetSashGravity( 0.5 );
+	m_splitter2->SetSashGravity( 0.9 );
 	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( PanelSlave::m_splitter2OnIdle ), NULL, this );
 
 	m_panel15 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );

@@ -367,7 +367,7 @@
             <property name="pin_button">1</property>
             <property name="pos"></property>
             <property name="resize">Resizable</property>
-            <property name="sashgravity">0.5</property>
+            <property name="sashgravity">0.8</property>
             <property name="sashpos">-180</property>
             <property name="sashsize">-1</property>
             <property name="show">1</property>
@@ -690,7 +690,7 @@
         <property name="window_style"></property>
       </object>
     </object>
-    <object class="Panel" expanded="false">
+    <object class="Panel" expanded="true">
       <property name="aui_managed">0</property>
       <property name="aui_manager_style">wxAUI_MGR_DEFAULT</property>
       <property name="bg"></property>
@@ -714,7 +714,7 @@
       <property name="window_extra_style"></property>
       <property name="window_name"></property>
       <property name="window_style">wxTAB_TRAVERSAL</property>
-      <object class="wxBoxSizer" expanded="false">
+      <object class="wxBoxSizer" expanded="true">
         <property name="minimum_size"></property>
         <property name="name">bSizer6</property>
         <property name="orient">wxVERTICAL</property>
@@ -768,7 +768,7 @@
             <property name="pin_button">1</property>
             <property name="pos"></property>
             <property name="resize">Resizable</property>
-            <property name="sashgravity">0.5</property>
+            <property name="sashgravity">0.9</property>
             <property name="sashpos">-100</property>
             <property name="sashsize">-1</property>
             <property name="show">1</property>
