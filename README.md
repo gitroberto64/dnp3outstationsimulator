@@ -25,12 +25,14 @@ Outstation simulator for DNP3 protocol based on opendnp3 and wxwidgets.
 
 #### opendnp3
 * git clone https://github.com/dnp3/opendnp3 ../opendnp3
-* cd ../opendnp3
+* Open Developer PowerShell for VS 2022
+* cd ../opendnp3 (path to opendnp3)
 * cmake -Wno-dev -S . -B build
 * cmake --build build  --config Release
 
 #### dnp3outstationsimpuator
-* cd ../
+* Open Developer PowerShell for VS 2022
+* cd ../ (path to dnp3outstationsimulator)
 * cmake -S . -B build
 * cmake --build build --config Release
 
